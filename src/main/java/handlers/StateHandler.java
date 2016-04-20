@@ -17,7 +17,7 @@ public class StateHandler implements EventListener {
     };
 
     private static State state;
-    private static States currState;
+    public static States currState;
   
     public StateHandler(){
       changeState(States.START);

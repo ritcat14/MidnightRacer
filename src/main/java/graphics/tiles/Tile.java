@@ -8,12 +8,22 @@ public class Tile {
     protected int    ID;
     protected Sprite sprite;
     protected int    x, y;
+    protected boolean solid;
+
+    public Tile(int ID, Sprite sprite, int x, int y, boolean solid) {
+        this.ID = ID;
+        this.sprite = sprite;
+        this.x = x;
+        this.y = y;
+        this.solid = solid;
+    }
 
     public Tile(int ID, Sprite sprite, int x, int y) {
         this.ID = ID;
         this.sprite = sprite;
         this.x = x;
         this.y = y;
+        this.solid = false;
     }
 
     public int getID() {
@@ -41,6 +51,10 @@ public class Tile {
         this.ID = ID;
         return this;
     }
+    
+    public boolean isSolid(){
+        return solid;
+    }
 
     public void update() {
 
@@ -53,7 +67,7 @@ public class Tile {
     }
 
     private void render(Screen screen) {
-        screen.renderTile(y, x, this);
+        screen.renderTile(x << 4, y << 4, this);
     }
 
 }

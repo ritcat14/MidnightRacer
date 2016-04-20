@@ -16,12 +16,15 @@ public class Game extends State {
     private BufferedImage    image        = new BufferedImage(WIDTH / SCALE, HEIGHT / SCALE, BufferedImage.TYPE_INT_RGB);
     private int[]            pixels       = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
   
+    public static Level currLevel;
+  
     public Game(){
       super();      
       City1 l1;
     try {
         l1 = new City1();
         add(l1);
+        currLevel = l1;
     } catch (Exception e1) {
         e1.printStackTrace();
     }

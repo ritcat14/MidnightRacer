@@ -10,13 +10,16 @@
 /projects/MidnightRacer/src/main/java/handlers/StateHandler.java
 /projects/MidnightRacer/src/main/java/tools/Vector2i.java
 /projects/MidnightRacer/src/main/java/graphics/tiles/Tile.java
+/projects/MidnightRacer/src/main/java/entity/mob/Mob.java
 /projects/MidnightRacer/src/main/java/handlers/ResourceHandler.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Pause.java
+/projects/MidnightRacer/src/main/java/graphics/sprite/AnimatedObject.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUILabel.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/State.java
 /projects/MidnightRacer/src/main/java/graphics/Screen.java
 /projects/MidnightRacer/src/main/java/events/EventListener.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Start.java
+/projects/MidnightRacer/src/main/java/entity/mob/Player.java
 /projects/MidnightRacer/src/main/java/handlers/GUIHandler.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUIButton.java
 /projects/MidnightRacer/src/main/java/events/Event.java
@@ -29,6 +32,8 @@
 /projects/MidnightRacer/src/main/java/graphics/layers/Layer.java
 /projects/MidnightRacer/src/main/java/tools/Console.java
 /projects/MidnightRacer/src/main/java/graphics/layers/levels/Level.java
+/projects/MidnightRacer/src/main/java/tools/Maths.java
 /projects/MidnightRacer/src/main/java/events/EventDispatcher.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUIPanel.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUIComponent.java
+/projects/MidnightRacer/src/main/java/entity/Entity.java

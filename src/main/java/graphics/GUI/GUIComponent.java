@@ -34,8 +34,8 @@ public abstract class GUIComponent implements EventListener {
     }
   
     public void setPosition(Vector2i position){
-      this.x = position.x;
-      this.y = position.y;
+      this.x = (int) position.x;
+      this.y = (int) position.y;
     }
   
     public void setPosition(int x, int y){

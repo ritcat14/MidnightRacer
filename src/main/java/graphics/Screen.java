@@ -14,7 +14,7 @@ public class Screen {
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 	public int xOffset = 0, yOffset = 0;
 	
-	public static int WIDTH = 800, HEIGHT = 600, SCALE = 3;
+	public static int WIDTH = 800, HEIGHT = 600, SCALE = 4;
 
 	public Screen(int width, int height) {
 		this.width = width;
@@ -85,7 +85,7 @@ public class Screen {
 				if (xa < -tile.getSprite().SIZE || xa >= width || ya < 0 || ya >= height) continue;
 				if(xa < 0)xa=0;
 				int col = tile.getSprite().pixels[x + y * tile.getSprite().getWidth()];
-				if(col != 0xffff00ff) pixels[xa + ya * width] = col;
+				if(col != 0xffff00ff && col != 0xff00ff) pixels[xa + ya * width] = col;
 			}
 		}
 	}

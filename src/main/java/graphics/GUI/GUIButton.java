@@ -1,18 +1,13 @@
 package graphics.GUI;
 
 import tools.Vector2i;
-import events.Mouse;
 
 import events.*;
 import events.types.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 public class GUIButton extends GUIComponent {
@@ -20,17 +15,14 @@ public class GUIButton extends GUIComponent {
     private GUILabel label;
 
     private BufferedImage    image          = null;
-  
-    private String           text           = "";
     private Color c;
 
     public GUIButton(int x, int y, int width, int height, String text) {
         super(x, y, width, height);
         Vector2i lp = new Vector2i(x,y);
-        this.text = text;
         lp.x += 4;
         lp.y += height - 5;
-        label = new GUILabel(lp.x, lp.y, text);
+        label = new GUILabel((int)lp.x, (int)lp.y, text);
         add(label);
         c = new Color(0xAAAAAA);
     }
@@ -39,7 +31,6 @@ public class GUIButton extends GUIComponent {
         super(x, y, image.getWidth(), image.getHeight());
         this.image = image;
         setImage(image);
-        this.text = text;
         c = new Color(0xAAAAAA);
     }
   
@@ -52,7 +43,6 @@ public class GUIButton extends GUIComponent {
     }
 
     public void setText(String text) {
-        this.text = text;
         label.text = text;
     }
 
