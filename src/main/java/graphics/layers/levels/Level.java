@@ -142,9 +142,9 @@ public abstract class Level extends Layer {
         
         screen.setOffset(xa, ya);
         int x0 = xa >> 4;
-        int x1 = (xa + screen.width + BLOCK_SIZE) >> 4;
+        int x1 = (xa + screen.width) >> 4;
         int y0 = ya >> 4;
-        int y1 = (ya + screen.height + BLOCK_SIZE) >> 4;
+        int y1 = (ya + screen.height) >> 4;
 
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
