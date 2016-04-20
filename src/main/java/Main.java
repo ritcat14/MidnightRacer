@@ -17,7 +17,8 @@ import javax.swing.JFrame;
 
 public class Main extends Canvas implements Runnable {
   
-    private int WIDTH = 800, HEIGHT = 600;
+    private int SCALE = Screen.SCALE;
+    private int WIDTH = Screen.WIDTH / SCALE, HEIGHT = Screen.HEIGHT / SCALE;
     private Screen screen;
     private Thread           thread       = null;
     private boolean running = false;
@@ -26,7 +27,7 @@ public class Main extends Canvas implements Runnable {
     private StateHandler sh = new StateHandler();
   
     public Main(){
-      setPreferredSize(new Dimension(WIDTH, HEIGHT));
+      setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
       
       screen = new Screen(WIDTH, HEIGHT);
       

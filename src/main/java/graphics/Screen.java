@@ -13,6 +13,8 @@ public class Screen {
 	public final int MAP_SIZE_MASK = MAP_SIZE - 1;
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 	public int xOffset = 0, yOffset = 0;
+	
+	public static int WIDTH = 800, HEIGHT = 600, SCALE = 3;
 
 	public Screen(int width, int height) {
 		this.width = width;

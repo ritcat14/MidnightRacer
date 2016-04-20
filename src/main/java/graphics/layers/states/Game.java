@@ -10,8 +10,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 public class Game extends State {
+    
+    private int WIDTH = Screen.WIDTH, HEIGHT = Screen.HEIGHT, SCALE = Screen.SCALE;
   
-    private BufferedImage    image        = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+    private BufferedImage    image        = new BufferedImage(WIDTH / SCALE, HEIGHT / SCALE, BufferedImage.TYPE_INT_RGB);
     private int[]            pixels       = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
   
     public Game(){
@@ -39,7 +41,7 @@ public class Game extends State {
       
         g.setColor(new Color(0xff00ff));
 
-        g.drawImage(image, 0, 0, 800, 600, null);
+        g.drawImage(image, 0, 0, WIDTH, HEIGHT, null);
       
         super.render(g);
     }

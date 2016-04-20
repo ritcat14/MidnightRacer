@@ -17,20 +17,21 @@ import handlers.ResourceHandler;
 public abstract class Level extends Layer {
 
     protected int                 layerNum;
-    protected ArrayList<Tile>     tileList       = new ArrayList<Tile>();
-
-    protected ArrayList<String[]> layers      = new ArrayList<String[]>();
 
     private ArrayList<Sprite>     tileSprites = new ArrayList<Sprite>();
 
     protected SpriteSheet         sheet;
+    
+    protected int[][] layerTiles;
   
     protected int						 width       = 0, height  = 0;
+    private int xa = 0, ya = 0;
+    private int BLOCK_SIZE = 16;
+    private int backID;
 
-    protected int                 xScroll     = 0, yScroll = 0;
-    private int xa = 400, ya = 300;
-
-    public Level(String dir, int layerNum) throws Exception {
+    public Level(String dir, int layerNum, int backID) throws Exception {
+        layerTiles = new int[layerNum][];
+        this.backID = backID;
         this.layerNum = layerNum;
         String[][] data = null;
         try {
@@ -48,28 +49,31 @@ public abstract class Level extends Layer {
         sheet = ResourceHandler.getSheet("/maps/sheets/cityTileSet.png", 224, 224);
         int width = Integer.parseInt((data[data.length - 3])[0]);
         int height = Integer.parseInt((data[data.length - 2])[0]);
-        this.width = width * 32;
-        this.height = height * 32;
+        this.width = width;
+        this.height = height;
         // Create all the tile sprites we need
-        int xNum = sheet.getWidth() / 32;
-        int yNum = sheet.getHeight() / 32;
+        int xNum = sheet.getWidth() / BLOCK_SIZE;
+        int yNum = sheet.getHeight() / BLOCK_SIZE;
 
         for (int y = 0; y < yNum; y++) {
             for (int x = 0; x < xNum; x++) {
-                tileSprites.add(new Sprite(32, x, y, sheet));
+                tileSprites.add(new Sprite(BLOCK_SIZE, x, y, sheet));
             }
         }
         for (int i = layerNum - 1; i > -1; i--) {
             System.out.println("Loading layer " + i);
             String[] layerData = data[i];
+            
             int j = 0;
+            int[] tileData = new int[width * height];
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     int ID = Integer.parseInt(layerData[j]);
-                    if (ID != 0) tileList.add(new Tile(ID, tileSprites.get(ID - 1), x * 32, y * 32));
+                    tileData[x + y * width] = ID;
                     j++;
                 }
             }
+            layerTiles[i] = tileData;
         }
     }
   
@@ -104,37 +108,48 @@ public abstract class Level extends Layer {
     }
 
     public int xScroll() {
-        return xScroll;
+        return xa;
     }
 
     public int yScroll() {
-        return yScroll;
+        return ya;
     }
   
-    public void setScroll(int xScroll, int yScroll) {
-        this.xScroll = xScroll;
-        this.yScroll = yScroll;
+    public void setScroll(int xa, int ya) {
+        this.xa = xa;
+        this.ya = ya;
     }
   
     public Tile getTile(int x, int y){
       if (x < 0 || y < 0 || x >= width || y >= height){
-        return tileList.get(29);
+          return new Tile(backID, tileSprites.get(backID - 1), x, y);
       }
-      for (int i = tileList.size() - 1; i > -1; i--){
-        if (tileList.get(i).getX() == x && tileList.get(i).getY() == y) {
-          return tileList.get(i);
-        }
+      for (int i = 0; i < layerNum; i++){
+          int[] tileData = layerTiles[i];
+          int ID = tileData[x + y * width];
+          if (ID == 0) continue;
+          else return new Tile(ID, tileSprites.get(ID - 1), x, y);
       }
-      return tileList.get(29);
+      return new Tile(backID, tileSprites.get(backID - 1), x, y);
     }
   
     public void update(){
       super.update();
     }
 
-    public void render(Screen screen) {      
-        for (int i = tileList.size() - 1; i > -1; i--){
-          tileList.get(i).render(screen);
+    public void render(Screen screen) {
+        setScroll((int)xa, (int)ya);
+        
+        screen.setOffset(xa, ya);
+        int x0 = xa >> 4;
+        int x1 = (xa + screen.width + BLOCK_SIZE) >> 4;
+        int y0 = ya >> 4;
+        int y1 = (ya + screen.height + BLOCK_SIZE) >> 4;
+
+        for (int y = y0; y < y1; y++) {
+            for (int x = x0; x < x1; x++) {
+                getTile(x, y).render(x, y, screen);
+            }
         }
     }
 
