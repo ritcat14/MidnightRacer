@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import tools.Maths;
 import tools.Vector2i;
+import entity.Entity;
+import entity.mob.Player;
 import events.Event;
 import events.EventDispatcher;
 import events.EventHandler;
@@ -21,10 +23,14 @@ public abstract class Level extends Layer {
     protected int             layerNum;
 
     private ArrayList<Sprite> tileSprites = new ArrayList<Sprite>();
+    
+    protected ArrayList<Entity> entities = new ArrayList<Entity>();
 
     protected SpriteSheet     sheet;
 
     protected int[][]         layerTiles;
+    
+    protected Player player;
 
     protected int             width       = 0, height = 0;
     private int               xa          = 0, ya = 0;
@@ -32,8 +38,6 @@ public abstract class Level extends Layer {
     private int               backID;
 
     public Level(String dir, int layerNum, int backID) throws Exception {
-        Vector2i v1 = Maths.v1(5, new Vector2i(2,4), 2, new Vector2i(7, -4), new Vector2i(3, 2));
-        System.out.println(v1.x + "," + v1.y);
         layerTiles = new int[layerNum][];
         this.backID = backID;
         this.layerNum = layerNum;
@@ -84,34 +88,20 @@ public abstract class Level extends Layer {
             layerTiles[i] = tileData;
         }
     }
+    
+    public void add(Entity e){
+        if (e instanceof Player) player = ((Player)e);
+        entities.add(e);
+    }
+    
+    public void remove(int i){
+        if (i < entities.size() - 1) entities.remove(i);
+        else throw new IndexOutOfBoundsException(i + " must be less than " + (entities.size() - 1));
+    }
 
     @Override
     public void onEvent(Event event) {
-        EventDispatcher dispatcher = new EventDispatcher(event);
-        dispatcher.dispatch(Event.Type.KEY_PRESSED, new EventHandler() {
-            public boolean onEvent(Event event) {
-                return onKeyPressed((KeyPressedEvent)event);
-            }
-        });
-    }
-
-    public boolean onKeyPressed(KeyPressedEvent event) {
-        int speed = 5;
-        if (event.getKey() == KeyEvent.VK_D) {
-            xa+=speed;
-            return true;
-        } else if (event.getKey() == KeyEvent.VK_A) {
-            xa-=speed;
-            return true;
-        }
-        if (event.getKey() == KeyEvent.VK_S) {
-            ya+=speed;
-            return true;
-        } else if (event.getKey() == KeyEvent.VK_W) {
-            ya-=speed;
-            return true;
-        }
-        return false;
+        if (player != null) player.onEvent(event);
     }
 
     public int xScroll() {
@@ -142,10 +132,12 @@ public abstract class Level extends Layer {
 
     public void update() {
         super.update();
+        for (int i = entities.size() - 1; i > -1; i--){
+            entities.get(i).update();
+        }
     }
 
     public void render(Screen screen) {
-        setScroll((int)xa, (int)ya);
 
         screen.setOffset(xa, ya);
         
@@ -160,6 +152,9 @@ public abstract class Level extends Layer {
                     getTile(x, y, i).render(x, y, screen);
                 }
             }
+        }
+        for (int i = entities.size() - 1; i > -1; i--){
+            entities.get(i).render(screen);
         }
     }
 

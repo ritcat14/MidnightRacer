@@ -11,6 +11,7 @@ events/types/MouseButtonEvent.class
 events/types/MousePressedEvent.class
 graphics/layers/states/Pause.class
 handlers/GUIHandler.class
+tools/TileCoordinate.class
 graphics/layers/states/Start$1.class
 graphics/layers/states/Settings$1.class
 graphics/Screen.class
@@ -19,7 +20,6 @@ graphics/GUI/GUIButton.class
 entity/mob/Player$1.class
 handlers/StateHandler.class
 graphics/GUI/GUILabel.class
-graphics/layers/levels/Level$1.class
 entity/mob/Mob$Direction.class
 events/EventHandler.class
 graphics/layers/states/Settings.class

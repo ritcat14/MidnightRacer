@@ -1,5 +1,6 @@
 package entity.mob;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import tools.Vector2i;
@@ -7,7 +8,10 @@ import events.*;
 import events.types.*;
 import graphics.*;
 import graphics.layers.levels.Level;
+import graphics.layers.states.Game;
 import graphics.sprite.AnimatedObject;
+import graphics.sprite.Sprite;
+import handlers.ResourceHandler;
 
 public class Player extends Mob implements EventListener {
 
@@ -16,18 +20,26 @@ public class Player extends Mob implements EventListener {
     public double speed = 5;
     
     private static String  name      = null;
-
-    private AnimatedObject down       = null, up = null, left = null, right = null;
+    
     private AnimatedObject animSprite = null;
 
     private BufferedImage  image      = null;
+    
+    private int mass = 350; //kg
+    
+    private Vector2i vel; // Velocity
+    
+    private double xa = 0, ya = 0;
+    
+    private int MAX_SPEED = 5;
+    
+    private boolean up, down, left, right;
 
     @Deprecated
     public Player(String name, Keyboard input) {
         Player.name = name;
         load();
-        animSprite = up;
-        sprite = animSprite.getSprite();
+        sprite = new Sprite(16, 0, 0, ResourceHandler.getSheet("/cars/proto-car.png", 16, 16));
 
         // Player default attributes
         health = 100;
@@ -38,16 +50,11 @@ public class Player extends Mob implements EventListener {
         this.y = y;
         load();
         Player.name = name;
+        sprite = new Sprite(16, 0, 0, ResourceHandler.getSheet("/cars/proto-car.png", 16, 16));
 
         // Player default attributes
         health = 100;
-
-        up = AnimatedObject.up;
-        /*down = AnimatedObject.down;
-        left = AnimatedObject.left;
-        right = AnimatedObject.right;
-        animSprite = down;*/
-        sprite = animSprite.getSprite();
+        speed = 0.2;
     }
     
     public void load(){
@@ -85,50 +92,85 @@ public class Player extends Mob implements EventListener {
 
     public void onEvent(Event event) {
         EventDispatcher dispatcher = new EventDispatcher(event);
-        dispatcher.dispatch(Event.Type.MOUSE_PRESSED, new EventHandler() {
+        dispatcher.dispatch(Event.Type.KEY_PRESSED, new EventHandler() {
             public boolean onEvent(Event event) {
                 return onKeyPressed((KeyPressedEvent)event);
             }
         });
-        dispatcher.dispatch(Event.Type.MOUSE_RELEASED, new EventHandler() {
+        dispatcher.dispatch(Event.Type.KEY_RELEASED, new EventHandler() {
             public boolean onEvent(Event event) {
                 return onKeyReleased((KeyReleasedEvent)event);
             }
         });
     }
 
-    private static int time = 0;
-
     public void update() {
+        
+        if (up && ya > -MAX_SPEED) ya -= speed;
+        else {
+            if (ya < 0) ya += speed;
+            }
+        if (down && ya < MAX_SPEED) ya += speed;
+        else {
+            if (ya > 0) ya -= speed;
+            }
+        if (left && xa > -MAX_SPEED) xa -= speed;
+        else {
+            if (xa < 0) xa += speed;
+            }
+        if (right && xa < MAX_SPEED) xa += speed;
+        else {
+            if (xa > 0) xa -= speed;
+            }
+        
+        vel = new Vector2i(xa, ya);
+        
+        level = Game.currLevel;
+        
         health = 100;
 
-        sprite = animSprite.getSprite();
-        time++;
-
-        if (walking)
-            animSprite.update();
-        else
-            animSprite.setFrame(0);
-
-        double xa = 0, ya = 0;
-
-        if (xa != 0 || ya != 0) {
-            move(xa, ya);
-            walking = true;
-        } else {
-            walking = false;
+        if (vel.x != 0 || vel.y != 0) {
+            move(vel.x, vel.y);
         }
     }
 
-    public boolean onKeyPressed(KeyPressedEvent e) {
-        return true;
+    public boolean onKeyPressed(KeyPressedEvent event) {
+        switch(event.getKey()){
+            case KeyEvent.VK_W:
+                up = true;
+                return true;
+            case KeyEvent.VK_A:
+                left = true;
+                return true;
+            case KeyEvent.VK_S:
+                down = true;
+                return true;
+            case KeyEvent.VK_D:
+                right = true;
+                return true;
+        }
+        return false;
     }
 
-    public boolean onKeyReleased(KeyReleasedEvent e) {
-        return true;
+    public boolean onKeyReleased(KeyReleasedEvent event) {
+        switch(event.getKey()){
+            case KeyEvent.VK_W:
+                up = false;
+                return true;
+            case KeyEvent.VK_A:
+                left = false;
+                return true;
+            case KeyEvent.VK_S:
+                down = false;
+                return true;
+            case KeyEvent.VK_D:
+                right = false;
+                return true;
+        }
+        return false;
     }
 
     public void render(Screen screen) {
-        screen.renderMob((int)(x - 16), (int)(y - 16), sprite);
+        screen.renderMob((int)(x - 16), (int)(y - 16), this);
     }
 }

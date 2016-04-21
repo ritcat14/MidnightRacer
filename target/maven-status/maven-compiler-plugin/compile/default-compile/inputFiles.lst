@@ -27,6 +27,7 @@
 /projects/MidnightRacer/src/main/java/events/Keyboard.java
 /projects/MidnightRacer/src/main/java/events/types/MousePressedEvent.java
 /projects/MidnightRacer/src/main/java/events/types/MouseButtonEvent.java
+/projects/MidnightRacer/src/main/java/tools/TileCoordinate.java
 /projects/MidnightRacer/src/main/java/events/types/MouseMovedEvent.java
 /projects/MidnightRacer/src/main/java/Main.java
 /projects/MidnightRacer/src/main/java/graphics/layers/Layer.java
