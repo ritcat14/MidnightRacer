@@ -9,6 +9,7 @@ graphics/layers/Layer.class
 graphics/layers/levels/City1.class
 events/types/MouseButtonEvent.class
 events/types/MousePressedEvent.class
+entity/mob/car/engines/Engine.class
 graphics/layers/states/Pause.class
 handlers/GUIHandler.class
 tools/TileCoordinate.class
@@ -20,6 +21,8 @@ graphics/GUI/GUIButton.class
 entity/mob/Player$1.class
 handlers/StateHandler.class
 graphics/GUI/GUILabel.class
+entity/mob/car/tyres/Tyre.class
+entity/mob/car/Car.class
 entity/mob/Mob$Direction.class
 events/EventHandler.class
 graphics/layers/states/Settings.class
@@ -49,6 +52,7 @@ graphics/layers/states/Start$2.class
 tools/Console.class
 events/Mouse.class
 events/types/KeyReleasedEvent.class
+entity/mob/car/Mustang.class
 graphics/sprite/AnimatedObject.class
 tools/Console$1.class
 tools/Maths.class

@@ -4,6 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import tools.Vector2i;
+import entity.mob.car.Car;
+import entity.mob.car.Mustang;
 import events.*;
 import events.types.*;
 import graphics.*;
@@ -34,13 +36,16 @@ public class Player extends Mob implements EventListener {
     private int MAX_SPEED = 5;
     
     private boolean up, down, left, right;
+    
+    private Car car;
 
     @Deprecated
     public Player(String name, Keyboard input) {
         Player.name = name;
         load();
-        sprite = new Sprite(16, 0, 0, ResourceHandler.getSheet("/cars/proto-car.png", 16, 16));
-
+        car = new Mustang();
+        sprite = car.getSprite();
+        
         // Player default attributes
         health = 100;
     }
@@ -50,7 +55,8 @@ public class Player extends Mob implements EventListener {
         this.y = y;
         load();
         Player.name = name;
-        sprite = new Sprite(16, 0, 0, ResourceHandler.getSheet("/cars/proto-car.png", 16, 16));
+        car = new Mustang();
+        sprite = car.getSprite();
 
         // Player default attributes
         health = 100;
@@ -171,6 +177,6 @@ public class Player extends Mob implements EventListener {
     }
 
     public void render(Screen screen) {
-        screen.renderMob((int)(x - 16), (int)(y - 16), this);
+        car.render(screen);
     }
 }
