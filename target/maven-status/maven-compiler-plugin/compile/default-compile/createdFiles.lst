@@ -1,7 +1,6 @@
 handlers/StateHandler$1.class
 tools/Console$2.class
 graphics/GUI/GUIComponent.class
-entity/mob/Player$2.class
 graphics/layers/levels/Level.class
 tools/Vector2i.class
 graphics/GUI/GUIButton$3.class
@@ -18,12 +17,14 @@ graphics/layers/states/Settings$1.class
 graphics/Screen.class
 handlers/ResourceHandler.class
 graphics/GUI/GUIButton.class
-entity/mob/Player$1.class
+graphics/GUI/GUISlideShow.class
 handlers/StateHandler.class
 graphics/GUI/GUILabel.class
 entity/mob/car/tyres/Tyre.class
 entity/mob/car/Car.class
 entity/mob/Mob$Direction.class
+graphics/layers/states/Garage.class
+entity/mob/car/Car$1.class
 events/EventHandler.class
 graphics/layers/states/Settings.class
 graphics/layers/states/Start.class
@@ -46,6 +47,7 @@ entity/mob/Player.class
 events/Event$Type.class
 graphics/sprite/SpriteSheet.class
 entity/mob/Mob.class
+entity/mob/car/Car$2.class
 tools/Console$3.class
 graphics/layers/states/Game.class
 graphics/layers/states/Start$2.class

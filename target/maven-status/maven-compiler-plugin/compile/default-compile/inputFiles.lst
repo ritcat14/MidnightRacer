@@ -6,6 +6,7 @@
 /projects/MidnightRacer/src/main/java/graphics/sprite/SpriteSheet.java
 /projects/MidnightRacer/src/main/java/graphics/layers/levels/City1.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Settings.java
+/projects/MidnightRacer/src/main/java/graphics/layers/states/Garage.java
 /projects/MidnightRacer/src/main/java/events/Mouse.java
 /projects/MidnightRacer/src/main/java/events/types/KeyReleasedEvent.java
 /projects/MidnightRacer/src/main/java/handlers/StateHandler.java
@@ -20,6 +21,7 @@
 /projects/MidnightRacer/src/main/java/graphics/layers/states/State.java
 /projects/MidnightRacer/src/main/java/graphics/Screen.java
 /projects/MidnightRacer/src/main/java/events/EventListener.java
+/projects/MidnightRacer/src/main/java/graphics/GUI/GUISlideShow.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Start.java
 /projects/MidnightRacer/src/main/java/entity/mob/Player.java
 /projects/MidnightRacer/src/main/java/handlers/GUIHandler.java
