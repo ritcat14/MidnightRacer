@@ -120,7 +120,7 @@ public class SpriteSheet {
         return pixels;
     }
   
-    public String getPath(){
+    public String getPath() {
       return path;
     }
 

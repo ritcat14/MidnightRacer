@@ -1,9 +1,11 @@
 package tools;
 
+import graphics.layers.levels.Level;
+
 public class TileCoordinate {
 	
 	private int x = 0, y= 0;
-	private final int TILE_SIZE = 16;
+	private final int TILE_SIZE = Level.BLOCK_SIZE;
 	
 	public TileCoordinate(int x, int y){
 		this.x = x * TILE_SIZE;

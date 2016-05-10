@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public abstract class GUIComponent implements EventListener {
 
-    protected int                     x, y;
-    protected int                     width, height;
+    public int                     x, y;
+    public int                     width, height;
     protected int	  						  time = 0;
     protected Rectangle					  bounds;
 
@@ -34,8 +34,8 @@ public abstract class GUIComponent implements EventListener {
     }
   
     public void setPosition(Vector2i position){
-      this.x = (int) position.x;
-      this.y = (int) position.y;
+      this.x = (int) position.dX;
+      this.y = (int) position.dY;
     }
   
     public void setPosition(int x, int y){
@@ -53,6 +53,15 @@ public abstract class GUIComponent implements EventListener {
         for (int i = components.size() - 1; i > -1; i--) {
             if (components.get(i) == null) continue;
             components.get(i).update();
+        }
+    }
+    
+    public void renderRelative(Graphics2D g){
+        for (int i = components.size() - 1; i > -1; i--) {
+            GUIComponent curr = components.get(i);
+            if (curr == null) continue;
+            curr.setPosition(x + curr.x, y + curr.y);
+            curr.render(g);
         }
     }
 
@@ -73,6 +82,10 @@ public abstract class GUIComponent implements EventListener {
 
     public void remove(int index) {
         components.remove(index);
+    }
+    
+    public Rectangle getBounds(){
+        return bounds;
     }
 
     public void onEvent(Event event) {}

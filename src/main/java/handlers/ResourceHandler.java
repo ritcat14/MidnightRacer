@@ -1,5 +1,6 @@
 package handlers;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
@@ -10,6 +11,8 @@ import org.w3c.dom.Element;
 
 import graphics.sprite.Sprite;
 import graphics.sprite.SpriteSheet;
+
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -100,6 +103,11 @@ public class ResourceHandler {
       allData[allData.length - 2] = h;
       allData[allData.length - 3] = w;
       return allData;
+    }
+    
+    public static BufferedImage getImage(String dir) throws Exception {
+        Class cls = Class.forName("Main");
+        return ImageIO.read(cls.getResource(dir));
     }
 
     public static InputStream getResource(String dir) throws ClassNotFoundException {

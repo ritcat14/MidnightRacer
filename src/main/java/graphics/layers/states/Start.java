@@ -1,25 +1,23 @@
 package graphics.layers.states;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Point;
 
 import events.types.MousePressedEvent;
 import graphics.GUI.GUIButton;
-import graphics.GUI.GUILabel;
 import graphics.GUI.GUIPanel;
-import handlers.GUIHandler;
+import handlers.ResourceHandler;
 import handlers.StateHandler;
-import events.Mouse;
 
 public class Start extends State {
 
     public Start() {
         super();
         GUIPanel main = new GUIPanel(0, 0, 800, 600, Color.GRAY);
-
-        GUILabel title = new GUILabel(0, 50, "MIDNIGHT RIDER").setFont(new Font("Impact", Font.PLAIN, 50)).setColour(Color.RED);
-        main.add(title);
+        try {
+            main = new GUIPanel(ResourceHandler.getImage("/GUI/start screen.png"));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         GUIButton start = new GUIButton(0, 100, 300, 50, "START") {
             @Override
@@ -30,25 +28,30 @@ public class Start extends State {
                 }
                 return false;
             }
-          
+
             @Override
-            public void update(){
-              super.update();
-              if (this.bounds.contains(new Point(Mouse.getX(), Mouse.getY()))) if (this.width < 330) this.width += 3;
-              else if (this.width > 300) this.width = 300;
+            public void update() {
+                super.update();
+                animate();
             }
         };
         main.add(start);
-      
-        GUIButton settings = new GUIButton(0, 200, 300, 50, "SETTINGS"){
-          @Override
-          public boolean onMousePressed(MousePressedEvent e){
-            if (super.onMousePressed(e)) {
-              StateHandler.changeState(StateHandler.States.SETTINGS);
-              return true;
+
+        GUIButton settings = new GUIButton(0, 200, 300, 50, "SETTINGS") {
+            @Override
+            public boolean onMousePressed(MousePressedEvent e) {
+                if (super.onMousePressed(e)) {
+                    StateHandler.changeState(StateHandler.States.SETTINGS);
+                    return true;
+                }
+                return false;
             }
-            return false;
-          }
+
+            @Override
+            public void update() {
+                super.update();
+                animate();
+            }
         };
         main.add(settings);
 
@@ -61,8 +64,14 @@ public class Start extends State {
                 }
                 return false;
             }
+
+            @Override
+            public void update() {
+                super.update();
+                animate();
+            }
         };
-      
+
         main.add(exit);
 
         gh.add(main);

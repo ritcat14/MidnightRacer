@@ -20,9 +20,9 @@ public class GUIButton extends GUIComponent {
     public GUIButton(int x, int y, int width, int height, String text) {
         super(x, y, width, height);
         Vector2i lp = new Vector2i(x,y);
-        lp.x += 4;
-        lp.y += height - 5;
-        label = new GUILabel((int)lp.x, (int)lp.y, text);
+        lp.dX += 4;
+        lp.dY += height - 5;
+        label = new GUILabel((int)lp.dX, (int)lp.dY, text);
         add(label);
         c = new Color(0xAAAAAA);
     }
@@ -93,6 +93,14 @@ public class GUIButton extends GUIComponent {
         g.fillRect(x, y, width, height);
       }
       super.render(g);
+    }
+
+    public void animate() {
+        if (this.getBounds().contains(new Point(Mouse.getX(), Mouse.getY())))
+            if (this.width < 310)
+                this.width += 2;
+        if (this.width > 300 && !this.getBounds().contains(new Point(Mouse.getX(), Mouse.getY())))
+            this.width = 300;
     }
 
 }

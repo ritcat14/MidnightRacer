@@ -1,105 +1,85 @@
 package tools;
 
+import java.lang.Math;
+
 public class Vector2i {
 
-    public double x = 0, y = 0;
+    public double dX;
+    public double dY;
+
+    // Constructor methods ....
 
     public Vector2i() {
-        set(0, 0);
+        dX = dY = 0.0;
     }
 
-    public Vector2i(Vector2i vector) {
-        set(vector.x, vector.y);
+    public Vector2i(double dX, double dY) {
+        this.dX = dX;
+        this.dY = dY;
     }
 
-    public Vector2i(double x, double y) {
-        set(x, y);
+    // Convert vector to a string ...
+
+    public String toString() {
+        return "Vector(" + dX + ", " + dY + ")";
     }
 
-    public void set(double x, double y) {
-        this.x = x;
-        this.y = y;
+    // Compute magnitude of vector ....
+
+    public double length() {
+        return Math.sqrt(dX * dX + dY * dY);
     }
 
-    public double getX() {
-        return x;
+    // Sum of two vectors ....
+
+    public Vector2i add(Vector2i v1) {
+        Vector2i v2 = new Vector2i(this.dX + v1.dX, this.dY + v1.dY);
+        return v2;
     }
 
-    public double getY() {
-        return y;
+    // Subtract vector v1 from v .....
+
+    public Vector2i sub(Vector2i v1) {
+        Vector2i v2 = new Vector2i(this.dX - v1.dX, this.dY - v1.dY);
+        return v2;
+    }
+
+    // Scale vector by a constant ...
+
+    public Vector2i scale(double scaleFactor) {
+        Vector2i v2 = new Vector2i(this.dX * scaleFactor, this.dY * scaleFactor);
+        return v2;
+    }
+
+    // Normalize a vectors length....
+
+    public Vector2i normalize() {
+        Vector2i v2 = new Vector2i();
+
+        double length = Math.sqrt(this.dX * this.dX + this.dY * this.dY);
+        if (length != 0) {
+            v2.dX = this.dX / length;
+            v2.dY = this.dY / length;
+        }
+
+        return v2;
     }
     
-    public double mod(){
-        return Math.sqrt((x * x) + (y * y));
+    // Magnitude of vector
+    public double magnitude() {
+        return Math.sqrt((dX * dX) + (dY * dY));
     }
 
-    public Vector2i add(Vector2i vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        return this;
-    }
+    // Dot product of two vectors .....
 
-    public Vector2i add(double value) {
-        this.x += value;
-        this.y += value;
-        return this;
-    }
-
-    public Vector2i subtract(Vector2i vector) {
-        this.x -= vector.x;
-        this.y -= vector.y;
-        return this;
-    }
-
-    public Vector2i setX(double x) {
-        this.x = x;
-        return this;
-    }
-
-    public Vector2i setY(double y) {
-        this.y = y;
-        return this;
+    public double dotProduct(Vector2i v1) {
+        return this.dX * v1.dX + this.dY * v1.dY;
     }
     
-    public double multiply(Vector2i a){
-        double x1 = x * a.x;
-        double y1 = y * a.y;
-        return x1 + y1;
-    }
+    // Angle of vector between i a,d j component
     
-    public Vector2i multiply(double m){
-        x = x * m;
-        y = y * m;
-        return this;
-    }
-    
-    public Vector2i divide(double d){
-        x = x / d;
-        y = y / d;
-        return this;
-    }
-
-    public int hashCode() {
-        return (int)(this.x * this.y);
-    }
-
-    public boolean samePos(Vector2i n) {
-        return (getX() == n.getX() && getY() == n.getY());
-    }
-
-    public static double getDistance(Vector2i v0, Vector2i v1) {
-        double x = v0.getX() - v1.getX();
-        double y = v0.getY() - v1.getY();
-        return Math.sqrt(x * x + y * y);
-    }
-
-    public boolean equals(Object object) {
-        if (!(object instanceof Vector2i))
-            return false;
-        Vector2i vec = (Vector2i)object;
-        if (vec.getX() == this.getX() && vec.getY() == this.getY())
-            return true;
-        else
-            return false;
+    public double angle(){
+        // tan(theta) = j / i
+        return Math.atan2(dY,dX);
     }
 }

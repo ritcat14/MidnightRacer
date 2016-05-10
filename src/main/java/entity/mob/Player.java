@@ -23,8 +23,6 @@ public class Player extends Mob implements EventListener {
     @Deprecated
     public Player(String name, Keyboard input) {
         Player.name = name;
-        car = new Mustang();
-        car.setLocation(new Vector2i(x,y));
         load();
         sprite = car.getSprite();
         
@@ -35,8 +33,7 @@ public class Player extends Mob implements EventListener {
     public Player(String name, double x, double y) {
         this.x = x;
         this.y = y;
-        car = new Mustang();
-        car.setLocation(new Vector2i(x,y));
+        car = new Mustang(x, y);
         load();
         Player.name = name;
         sprite = car.getSprite();
@@ -60,6 +57,10 @@ public class Player extends Mob implements EventListener {
     public void levelIn() {
         XPLevel++;
     }
+    
+    public Car getCar(){
+        return car;
+    }
 
     public static int getLevel() {
         return XPLevel;
@@ -69,13 +70,9 @@ public class Player extends Mob implements EventListener {
         return health;
     }
 
-    public void setSpeed(double spd) {
-        car.setSpeed(spd);
-    }
-
     public void setLocation(Vector2i p) {
-        this.x = p.x;
-        this.y = p.y;
+        this.x = p.dX;
+        this.y = p.dY;
     }
     
     public void onEvent(Event event) {

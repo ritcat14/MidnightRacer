@@ -4,35 +4,34 @@ import java.awt.event.KeyEvent;
 
 import tools.Vector2i;
 import entity.mob.Mob;
-import entity.mob.car.engines.Engine;
-import entity.mob.car.tyres.Tyre;
 import events.*;
 import events.types.KeyPressedEvent;
 import events.types.KeyReleasedEvent;
 import graphics.Screen;
-import graphics.layers.states.Game;
+import graphics.layers.levels.Level;
+import graphics.sprite.Sprite;
 
 public abstract class Car extends Mob implements EventListener {
     
-    private Engine engine;
-    private Tyre[] typre = new Tyre[3];
+    public float speed = 0.2f;
     
-    private int mass = 350; //kg
+    public int gear = 1;
+    public int gearMax = 6;
     
-    public double speed = 0.2;
+    private Vector2i vel = new Vector2i(); // Velocity
     
-    private Vector2i vel; // Velocity
-    
-    private double xa = 0, ya = 0;
-    
-    private int MAX_SPEED = 5;
-    
-    private boolean up, down, left, right;
+    private boolean up, down, left, right, gearUp, gearDown;
     
     private Vector2i position;
     
-    public Car(){
+    private Sprite preSprite;
+    
+    public Car(Sprite sprite, double x, double y){
+        this.x = x;
+        this.y = y;
         position = new Vector2i(x,y);
+        preSprite = sprite;
+        this.sprite = sprite;
     }
     
     public Vector2i getLocation(){
@@ -41,49 +40,53 @@ public abstract class Car extends Mob implements EventListener {
     
     @Override
     public void render(Screen screen){
-        screen.renderMob((int)(x - 16), (int)(y - 16), this);
+        screen.renderMob((int)(x - Level.BLOCK_SIZE), (int)(y - Level.BLOCK_SIZE), this);
     }
 
     public void setLocation(Vector2i p) {
-        this.x = p.x;
-        this.y = p.y;
+        this.x = p.dX;
+        this.y = p.dY;
     }
     
+    public int getGear(){
+        return gear;
+    }
+    
+    private double upTime = 0, downTime = 0, leftTime = 0, rightTime = 0;
     @Override
     public void update(){
         
-        // CAR PHYSICS HERE
-        
         position = new Vector2i(x,y);
-        if (up && ya > -MAX_SPEED) ya -= speed;
-        else {
-            if (ya < 0) ya += speed;
-            }
-        if (down && ya < MAX_SPEED) ya += speed;
-        else {
-            if (ya > 0) ya -= speed;
-            }
-        if (left && xa > -MAX_SPEED) xa -= speed;
-        else {
-            if (xa < 0) xa += speed;
-            }
-        if (right && xa < MAX_SPEED) xa += speed;
-        else {
-            if (xa > 0) xa -= speed;
-            }
         
-        vel = new Vector2i(xa, ya);
+        double maxAcceleration = gear * (speed * 5);
         
-        level = Game.currLevel;
+        if (gearUp && gear < gearMax) gear++;
+        if (gearDown && gear > 0) gear--;
         
-        health = 100;
-
-        if (vel.x != 0 || vel.y != 0) {
-            move(vel.x, vel.y);
+        // CAR PHYSICS HERE
+        if (up && upTime < maxAcceleration) upTime += speed;
+        else if (!up && upTime > -maxAcceleration) upTime -= speed;
+        
+        if (down && downTime < maxAcceleration) downTime += speed;
+        else if (!down && downTime > -maxAcceleration) downTime-= speed;
+        
+        if (left && leftTime < maxAcceleration) leftTime += speed;
+        else if (!left && leftTime > -maxAcceleration) leftTime -= speed;
+        
+        if (right && rightTime < maxAcceleration) rightTime += speed;
+        else if (!right && rightTime > -maxAcceleration) rightTime -= speed;
+        
+        
+        vel = new Vector2i(rightTime - leftTime, downTime - upTime);
+        
+        if (vel.dX != 0 || vel.dY != 0) sprite = Sprite.rotate(preSprite, vel.angle());
+        
+        if (vel.dY != 0 || vel.dX != 0) {
+            move(vel.dX, vel.dY);
         }
     }
 
-    public void setSpeed(double spd) {
+    public void setSpeed(float spd) {
         speed = spd;
     }
 
@@ -114,6 +117,12 @@ public abstract class Car extends Mob implements EventListener {
                 return true;
             case KeyEvent.VK_D:
                 right = true;
+                return true;
+            case KeyEvent.VK_SHIFT:
+                if(gear < gearMax) gear++;
+                return true;
+            case KeyEvent.VK_CONTROL:
+                if (gear > 1) gear--;
                 return true;
         }
         return false;

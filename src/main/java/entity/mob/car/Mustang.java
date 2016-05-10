@@ -1,13 +1,13 @@
 package entity.mob.car;
 
+import graphics.layers.levels.Level;
 import graphics.sprite.Sprite;
 import handlers.ResourceHandler;
 
 public class Mustang extends Car {
     
-    public Mustang(){
-        super();
-        sprite = new Sprite(16, 0, 0, ResourceHandler.getSheet("/cars/proto-car.png", 16, 16));
+    public Mustang(double x, double y){
+        super(new Sprite(Level.BLOCK_SIZE, 0, 0, ResourceHandler.getSheet("/cars/proto-car.png", Level.BLOCK_SIZE, Level.BLOCK_SIZE)), x, y);
     }
     
 }

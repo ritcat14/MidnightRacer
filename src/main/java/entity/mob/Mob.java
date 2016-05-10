@@ -2,6 +2,7 @@ package entity.mob;
 
 import entity.Entity;
 import graphics.Screen;
+import graphics.layers.levels.Level;
 
 public abstract class Mob extends Entity {
     
@@ -76,8 +77,8 @@ public abstract class Mob extends Entity {
     protected boolean entityCollided(Entity e) {
         boolean collided = false;
         for (int c = 0; c < 4; c++) {
-            double xt = ((x + e.getX()) - (c % 2) * 15) / 16;
-            double yt = ((y + e.getY()) - (c / 2) * 15) / 16;
+            double xt = ((x + e.getX()) - (c % 2) * (Level.BLOCK_SIZE - 1)) / Level.BLOCK_SIZE;
+            double yt = ((y + e.getY()) - (c / 2) * (Level.BLOCK_SIZE - 1)) / Level.BLOCK_SIZE;
             int ix = (int)Math.ceil(xt);
             int iy = (int)Math.ceil(yt);
             int width = e.getSprite().getWidth();
@@ -90,19 +91,19 @@ public abstract class Mob extends Entity {
 
     protected boolean collision(double xa, double ya) {
         boolean solid = false;
-        for (int c = 0; c < 4; c++) {
+        /*for (int c = 0; c < 4; c++) {
             double xt, yt;
-            xt = (int)(((x + xa) + c % 2 * 14 - 7) / 16);
-            yt = (int)(((y + ya) + c / 2 * 12 + 3) / 16);
+            xt = (int)(((x + xa) + c % 2 * 14 - 7) / Level.BLOCK_SIZE);
+            yt = (int)(((y + ya) + c / 2 * 12 + 3) / Level.BLOCK_SIZE);
             int ix = (int)Math.ceil(xt);
             int iy = (int)Math.ceil(yt);
             if (c % 2 == 0)
                 ix = (int)Math.floor(xt);
             if (c / 2 == 0)
                 iy = (int)Math.floor(yt);
-            if (level.getTile(ix, iy, 0).isSolid())
+            if (Game.currLevel.getTile(ix, iy).isSolid())
                 solid = true;
-        }
+        }*/
         return solid;
     }
 }

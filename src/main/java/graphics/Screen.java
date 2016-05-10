@@ -4,6 +4,7 @@ import entity.mob.Mob;
 import graphics.sprite.Sprite;
 import graphics.sprite.SpriteSheet;
 import graphics.tiles.Tile;
+import graphics.layers.levels.Level;
 
 public class Screen {
 
@@ -14,9 +15,10 @@ public class Screen {
 	public final int MAP_SIZE_MASK = MAP_SIZE - 1;
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 	public int xOffset = 0, yOffset = 0;
-	public int BLOCK_SIZE = 16;
+	public int BLOCK_SIZE = Level.BLOCK_SIZE;
 	
-	public static int WIDTH = 800, HEIGHT = 600, SCALE = 4;
+	public static int WIDTH = 800, HEIGHT = 600;
+	public static double SCALE = 1;
 
 	public Screen(int width, int height) {
 		this.width = width;

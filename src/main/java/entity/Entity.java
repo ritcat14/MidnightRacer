@@ -51,7 +51,7 @@ public class Entity{
 	}
   
     public Rectangle getBounds(){
-      Rectangle r = new Rectangle((int)(x-16), (int)(y-16), sprite.getWidth(), sprite.getHeight());
+      Rectangle r = new Rectangle((int)(x-Level.BLOCK_SIZE), (int)(y-Level.BLOCK_SIZE), sprite.getWidth(), sprite.getHeight());
       return r;
     }
 	

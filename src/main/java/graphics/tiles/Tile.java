@@ -1,6 +1,7 @@
 package graphics.tiles;
 
 import graphics.Screen;
+import graphics.layers.levels.Level;
 import graphics.sprite.Sprite;
 
 public class Tile {
@@ -56,9 +57,7 @@ public class Tile {
         return solid;
     }
 
-    public void update() {
-
-    }
+    public void update() {}
 
     public void render(int x, int y, Screen screen) {
         this.x = x;
@@ -67,7 +66,7 @@ public class Tile {
     }
 
     private void render(Screen screen) {
-        screen.renderTile(x << 4, y << 4, this);
+        screen.renderTile(x << Level.bitOffset, y << Level.bitOffset, this);
     }
 
 }
