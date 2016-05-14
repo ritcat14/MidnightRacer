@@ -104,7 +104,7 @@ public class Screen {
 				if (xa < -BLOCK_SIZE || xa >= width || ya < 0 || ya >= height) break;
 				if(xa < 0)xa=0;
 				int col = sprite.pixels[x + y * BLOCK_SIZE];
-				if(col != 0xffff00ff)	pixels[xa + ya * width] = col;
+				if(col != 0xffff00ff && col != 0xFF00FF)	pixels[xa + ya * width] = col;
 			}
 		}
 	}
@@ -119,12 +119,16 @@ public class Screen {
 				if (xa < -BLOCK_SIZE || xa >= width || ya < 0 || ya >= height) break;
 				if(xa < 0)xa=0;
 				int col = mob.getSprite().pixels[x + y * BLOCK_SIZE];
-				if(col != 0xffff00ff)	pixels[xa + ya * width] = col;
+				if(col != 0xffff00ff && col != 0xFF00FF)	pixels[xa + ya * width] = col;
 			}
 		}
 	}
   
-    public void fillRect(int xp, int yp, int width, int height, int colour){
+    public void fillRect(int xp, int yp, int width, int height, int colour, boolean fixed){
+		if(fixed){
+			xp -= xOffset;
+			yp -= yOffset;
+		}
       for (int x = xp; x < xp + width; x++){
         for (int y = yp; y < yp + height; y++){
           pixels[x + y * width] = colour;

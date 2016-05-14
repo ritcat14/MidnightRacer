@@ -7,7 +7,7 @@ import handlers.ResourceHandler;
 public class Mustang extends Car {
     
     public Mustang(double x, double y){
-        super(new Sprite(Level.BLOCK_SIZE, 0, 0, ResourceHandler.getSheet("/player/cars/proto-car.png", Level.BLOCK_SIZE, Level.BLOCK_SIZE)), x, y);
+        super(new Sprite(Level.BLOCK_SIZE, 0, 1, ResourceHandler.getSheet("/player/cars/carSprites.png", Level.BLOCK_SIZE * 4, Level.BLOCK_SIZE * 4)), x, y);
     }
     
 }

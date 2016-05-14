@@ -29,6 +29,10 @@ public class GUIHandler extends Layer {
     if (g != null) components.add(g);
   }
   
+  public boolean contains(GUIComponent g){
+      return (components.contains(g));
+  }
+  
   public void remove(GUIComponent g){
     components.remove(g);
   }

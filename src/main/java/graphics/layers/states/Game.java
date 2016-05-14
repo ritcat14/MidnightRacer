@@ -25,7 +25,6 @@ public class Game extends State {
     private int[]         pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
     private Player        player;
     private GUILabel gear;
-    private GUIPanel bottom;
 
     public static Level   currLevel;
 
@@ -33,29 +32,30 @@ public class Game extends State {
         super();
         TileCoordinate playerSpawn = new TileCoordinate(5, 5);
         player = new Player("Kris", playerSpawn.x(), playerSpawn.y());
-        BufferedImage image;
-        bottom = new GUIPanel(0,0,0,0,Color.BLACK);
         City1 l1;
         try {
             l1 = new City1();
             l1.add(player);
             add(l1);
             currLevel = l1;
-            image = ImageIO.read(Game.class.getResource("/GUI/HUD/HUD.png"));
-            bottom = new GUIPanel(image, 0, Screen.HEIGHT - image.getHeight());
         } catch (Exception e1) {
             e1.printStackTrace();
         }
-        
-        gear = new GUILabel(bottom.x + 4, bottom.y + (bottom.height - 5), "GEAR: ").setColour(Color.GRAY);
-        bottom.add(gear);
-        
-        gh.add(bottom);
+        gear = new GUILabel(4, (Screen.HEIGHT - 50), "GEAR: ").setColour(Color.GRAY);
     }
     
-    public void update(){
+    public void update() {
         super.update();
-        gear.setText("GEAR: " + player.getCar().getGear());
+        if (player.getCar() != null) {
+            gear.setText("GEAR: " + player.getCar().getGear());
+            if (!gh.contains(gear)){
+                gh.add(gear);
+            }
+        } else{
+            if (gh.contains(gear)){
+                gh.remove(gear);
+            }
+        }
     }
 
     public void render(Graphics2D g, Screen screen) {

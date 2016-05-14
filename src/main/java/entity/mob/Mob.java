@@ -3,6 +3,7 @@ package entity.mob;
 import entity.Entity;
 import graphics.Screen;
 import graphics.layers.levels.Level;
+import graphics.layers.states.Game;
 
 public abstract class Mob extends Entity {
     
@@ -91,19 +92,24 @@ public abstract class Mob extends Entity {
 
     protected boolean collision(double xa, double ya) {
         boolean solid = false;
-        /*for (int c = 0; c < 4; c++) {
+        for (int c = 0; c < 4; c++) {
             double xt, yt;
-            xt = (int)(((x + xa) + c % 2 * 14 - 7) / Level.BLOCK_SIZE);
-            yt = (int)(((y + ya) + c / 2 * 12 + 3) / Level.BLOCK_SIZE);
+            xt = (int)(((x + xa) + c % 2 * 8 - 20) / Level.BLOCK_SIZE);
+            yt = (int)(((y + ya) + c / 2 * 8 - 20) / Level.BLOCK_SIZE);
             int ix = (int)Math.ceil(xt);
             int iy = (int)Math.ceil(yt);
             if (c % 2 == 0)
                 ix = (int)Math.floor(xt);
             if (c / 2 == 0)
                 iy = (int)Math.floor(yt);
-            if (Game.currLevel.getTile(ix, iy).isSolid())
-                solid = true;
-        }*/
+            if (Game.currLevel.getTile(ix, iy).isSolid()){
+                if (this instanceof Player) {
+                    if (((Player)this).getCar() == null){
+                        solid = false;
+                    } else solid = true;
+                }
+            }
+        }
         return solid;
     }
 }

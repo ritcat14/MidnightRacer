@@ -13,11 +13,13 @@ public class AnimatedObject extends Sprite {
     private int                  rate                 = 5;
     private int                  time                 = 0;
     private int                  length               = -1;
+    private Sprite[]             sprites;
 
     public AnimatedObject(SpriteSheet sheet, int width, int height, int length) {
         super(sheet, width, height);
         this.length = length;
-        sprite = sheet.getSprites()[0];
+        sprites = sheet.getSprites();
+        sprite = sprites[0];
         if (length > sheet.getSprites().length)
             System.out.println("ERROR");
     }
@@ -29,7 +31,7 @@ public class AnimatedObject extends Sprite {
                 frame = 0;
             else
                 frame++;
-            sprite = sheet.getSprites()[frame];
+            sprite = sprites[frame];
         }
     }
 
@@ -40,13 +42,38 @@ public class AnimatedObject extends Sprite {
     public void setFrameRate(int frames) {
         this.frame = frames;
     }
+    
+    public Sprite[] getSprites(){
+        return sprites;
+    }
+    
+    public AnimatedObject setSprites(Sprite[] sprites){
+        this.sprites = sprites;
+        return this;
+    }
+    
+    public SpriteSheet getSheet(){
+        return sheet;
+    }
+    
+    public int getLength(){
+        return length;
+    }
+    
+    public static AnimatedObject rotate(AnimatedObject a, double angle){
+        Sprite[] spritesTemp = a.getSprites();
+        for (int i = 0; i < spritesTemp.length; i++){
+            spritesTemp[i] = Sprite.rotate(spritesTemp[i], angle);
+        }
+        return new AnimatedObject(a.getSheet(), a.getWidth(), a.getHeight(), a.getLength()).setSprites(spritesTemp);
+    }
 
     public void setFrame(int index) {
         if (index > sheet.getSprites().length - 1) {
             System.err.println("Index out of bounds in " + this);
             return;
         }
-        sprite = sheet.getSprites()[index];
+        sprite = sprites[index];
     }
   
     public void setSpriteSheet(SpriteSheet sheet){

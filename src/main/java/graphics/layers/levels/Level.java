@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import entity.Entity;
 import entity.mob.Player;
+import entity.mob.car.Mustang;
 import events.Event;
 import graphics.Screen;
 import graphics.layers.Layer;
@@ -14,25 +15,25 @@ import handlers.ResourceHandler;
 
 public abstract class Level extends Layer {
 
-    protected int               layerNum;
+    protected int             layerNum;
 
-    private ArrayList<Sprite>   tileSprites = new ArrayList<Sprite>();
+    private ArrayList<Sprite> tileSprites = new ArrayList<Sprite>();
 
-    protected ArrayList<Entity> entities    = new ArrayList<Entity>();
+    public ArrayList<Entity>  entities    = new ArrayList<Entity>();
 
-    protected SpriteSheet       sheet;
+    protected SpriteSheet     sheet;
 
-    protected int[][]           layerTiles;
+    protected int[][]         layerTiles;
 
-    protected int[]             solids;
+    protected int[]           solids;
 
-    protected Player            player;
+    protected Player          player;
 
-    protected int               width       = 0, height = 0;
-    private int                 xa          = 0, ya = 0;
-    public static int           BLOCK_SIZE  = 32;
-    public static int           bitOffset   = (int)(Math.log(BLOCK_SIZE) / Math.log(2)); // 16 -> 4, 32 -> 5, 64 -> 6
-    private int                 backID;
+    protected int             width       = 0, height = 0;
+    private int               xa          = 0, ya = 0;
+    public static int         BLOCK_SIZE  = 32;
+    public static int         bitOffset   = (int)(Math.log(BLOCK_SIZE) / Math.log(2)); // 16 -> 4, 32 -> 5, 64 -> 6
+    private int               backID;
 
     public Level(String dir, int layerNum, int backID) throws Exception {
         layerTiles = new int[layerNum][];
@@ -85,6 +86,8 @@ public abstract class Level extends Layer {
             layerTiles[i] = tileData;
         }
         convertSolids(data[data.length - 1]);
+
+        entities.add(new Mustang(128, 128));
     }
 
     private void convertSolids(String[] data) {
@@ -183,7 +186,8 @@ public abstract class Level extends Layer {
         int ID = tileData[x + y * width];
         if (ID != 0) {
             return new Tile(ID, tileSprites.get(ID - 1), x, y, isSolid(ID));
-        } else return null;
+        } else
+            return null;
     }
 
     public void update() {
@@ -214,8 +218,10 @@ public abstract class Level extends Layer {
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
                 Tile t = getTile(x, y, layerNum);
-                if (t != null) t.render(x, y, screen);
-                else continue;
+                if (t != null)
+                    t.render(x, y, screen);
+                else
+                    continue;
             }
         }
     }
