@@ -10,6 +10,7 @@ public class Tile {
     protected Sprite sprite;
     protected int    x, y;
     protected boolean solid;
+    protected String[] properties;
 
     public Tile(int ID, Sprite sprite, int x, int y, boolean solid) {
         this.ID = ID;
@@ -25,6 +26,14 @@ public class Tile {
         this.x = x;
         this.y = y;
         this.solid = false;
+    }
+
+    public Tile(int ID, Sprite sprite, int x, int y, String[] properties) {
+        this.ID = ID;
+        this.sprite = sprite;
+        this.x = x;
+        this.y = y;
+        this.properties = properties;
     }
 
     public int getID() {
@@ -55,6 +64,13 @@ public class Tile {
     
     public boolean isSolid(){
         return solid;
+    }
+    
+    public boolean hasProperty(String property){
+        for (String s : properties){
+            if (s.equals(property)) return true;
+        }
+        return false;
     }
 
     public void update() {}

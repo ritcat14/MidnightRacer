@@ -33,6 +33,13 @@ public class GUIButton extends GUIComponent {
         setImage(image);
         c = new Color(0xAAAAAA);
     }
+
+    public GUIButton(int x, int y, BufferedImage image) {
+        super(x, y, image.getWidth(), image.getHeight());
+        this.image = image;
+        setImage(image);
+        c = new Color(0xAAAAAA);
+    }
   
     public void setColour(int col){
       c = new Color(col);

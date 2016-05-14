@@ -14,25 +14,25 @@ import handlers.ResourceHandler;
 
 public abstract class Level extends Layer {
 
-    protected int             layerNum;
+    protected int               layerNum;
 
-    private ArrayList<Sprite> tileSprites = new ArrayList<Sprite>();
-    
-    protected ArrayList<Entity> entities = new ArrayList<Entity>();
+    private ArrayList<Sprite>   tileSprites = new ArrayList<Sprite>();
 
-    protected SpriteSheet     sheet;
+    protected ArrayList<Entity> entities    = new ArrayList<Entity>();
 
-    protected int[][]         layerTiles;
-    
-    protected int[]           solids;
-    
-    protected Player player;
+    protected SpriteSheet       sheet;
 
-    protected int             width       = 0, height = 0;
-    private int               xa          = 0, ya = 0;
-    public static int         BLOCK_SIZE  = 64;
-    public static int         bitOffset = 6; // 16 -> 4, 32 -> 5, 64 -> 6
-    private int               backID;
+    protected int[][]           layerTiles;
+
+    protected int[]             solids;
+
+    protected Player            player;
+
+    protected int               width       = 0, height = 0;
+    private int                 xa          = 0, ya = 0;
+    public static int           BLOCK_SIZE  = 32;
+    public static int           bitOffset   = (int)(Math.log(BLOCK_SIZE) / Math.log(2)); // 16 -> 4, 32 -> 5, 64 -> 6
+    private int                 backID;
 
     public Level(String dir, int layerNum, int backID) throws Exception {
         layerTiles = new int[layerNum][];
@@ -54,12 +54,12 @@ public abstract class Level extends Layer {
     }
 
     public void load(String[][] data) {
-        sheet = ResourceHandler.getSheet("/maps/sheets/cityTileSet.png", BLOCK_SIZE * 7, BLOCK_SIZE * 7);
+        sheet = ResourceHandler.getSheet("/maps/sheets/cityTileSet.png", BLOCK_SIZE * 8, BLOCK_SIZE * 21);
         int width = Integer.parseInt((data[data.length - 3])[0]);
         int height = Integer.parseInt((data[data.length - 2])[0]);
         this.width = width;
         this.height = height;
-        
+
         // Create all the tile sprites we need
         int xNum = sheet.getWidth() / BLOCK_SIZE;
         int yNum = sheet.getHeight() / BLOCK_SIZE;
@@ -86,45 +86,52 @@ public abstract class Level extends Layer {
         }
         convertSolids(data[data.length - 1]);
     }
-    
-    private void convertSolids(String[] data){
+
+    private void convertSolids(String[] data) {
         int i = 0;
-        for (String s : data){
-            if (s == null) continue;
+        for (String s : data) {
+            if (s == null)
+                continue;
             String[] parts = s.split(",");
             String bln = parts[1];
             boolean solid = Boolean.parseBoolean(bln);
-            if (solid)i ++;
+            if (solid)
+                i++;
         }
         solids = new int[i];
         i = 0;
-        for (String s : data){
-            if (s == null) continue;
+        for (String s : data) {
+            if (s == null)
+                continue;
             String[] parts = s.split(",");
             String bln = parts[1];
             String ID = parts[0];
             boolean solid = Boolean.parseBoolean(bln);
-            if (solid){
+            if (solid) {
                 solids[i] = Integer.parseInt(ID);
                 System.out.println(ID);
-                i ++;
+                i++;
             }
         }
     }
-    
-    public void add(Entity e){
-        if (e instanceof Player) player = ((Player)e);
+
+    public void add(Entity e) {
+        if (e instanceof Player)
+            player = ((Player)e);
         entities.add(e);
     }
-    
-    public void remove(int i){
-        if (i < entities.size() - 1) entities.remove(i);
-        else throw new IndexOutOfBoundsException(i + " must be less than " + (entities.size() - 1));
+
+    public void remove(int i) {
+        if (i < entities.size() - 1)
+            entities.remove(i);
+        else
+            throw new IndexOutOfBoundsException(i + " must be less than " + (entities.size() - 1));
     }
 
     @Override
     public void onEvent(Event event) {
-        if (player != null) player.onEvent(event);
+        if (player != null)
+            player.onEvent(event);
     }
 
     public int xScroll() {
@@ -139,35 +146,49 @@ public abstract class Level extends Layer {
         this.xa = xa;
         this.ya = ya;
     }
-    
+
     public boolean isSolid(int ID) {
-        for (int i = 0; i < solids.length; i++){
-            if (solids[i] == ID) return true;
+        for (int i = 0; i < solids.length; i++) {
+            if (solids[i] == ID)
+                return true;
         }
         return false;
     }
 
     public Tile getTile(int x, int y) {
         if (x < 0 || y < 0 || x >= width || y >= height) {
-            return new Tile(backID, /*tileSprites.get(backID - 1)*/new Sprite(BLOCK_SIZE, 0x0000ff), x, y, true);
+            return new Tile(backID, tileSprites.get(backID - 1), x, y, true);
         }
-        
+
         int[] tileData;
-        
-        for (int i = layerTiles.length - 1; i > -1; i--){
+
+        for (int i = layerTiles.length - 2; i > -1; i--) {
             tileData = layerTiles[i];
-            if (tileData[x + y * width] == 0) continue;
+            if (tileData[x + y * width] == 0)
+                continue;
             else {
                 int ID = tileData[x + y * width];
                 return new Tile(ID, tileSprites.get(ID - 1), x, y, isSolid(ID));
             }
         }
-        return new Tile(backID, /*tileSprites.get(backID - 1)*/new Sprite(BLOCK_SIZE, 0x0000ff), x, y, true);
+        return new Tile(backID, tileSprites.get(backID - 1), x, y, true);
+    }
+
+    public Tile getTile(int x, int y, int layer) {
+        if (x < 0 || y < 0 || x >= width || y >= height) {
+            return null;
+        }
+
+        int[] tileData = layerTiles[layer - 1];
+        int ID = tileData[x + y * width];
+        if (ID != 0) {
+            return new Tile(ID, tileSprites.get(ID - 1), x, y, isSolid(ID));
+        } else return null;
     }
 
     public void update() {
         super.update();
-        for (int i = entities.size() - 1; i > -1; i--){
+        for (int i = entities.size() - 1; i > -1; i--) {
             entities.get(i).update();
         }
     }
@@ -175,19 +196,27 @@ public abstract class Level extends Layer {
     public void render(Screen screen) {
 
         screen.setOffset(xa, ya);
-        
+
         int x0 = xa >> bitOffset;
         int x1 = (xa + screen.width + BLOCK_SIZE) >> bitOffset;
         int y0 = ya >> bitOffset;
         int y1 = (ya + screen.height + BLOCK_SIZE) >> bitOffset;
-    
+
         for (int y = y0; y < y1; y++) {
             for (int x = x0; x < x1; x++) {
                 getTile(x, y).render(x, y, screen);
             }
         }
-        for (int i = entities.size() - 1; i > -1; i--){
+        for (int i = entities.size() - 1; i > -1; i--) {
             entities.get(i).render(screen);
+        }
+
+        for (int y = y0; y < y1; y++) {
+            for (int x = x0; x < x1; x++) {
+                Tile t = getTile(x, y, layerNum);
+                if (t != null) t.render(x, y, screen);
+                else continue;
+            }
         }
     }
 
