@@ -10,7 +10,7 @@ import graphics.layers.levels.Level;
 import graphics.layers.states.Game;
 import graphics.sprite.Sprite;
 
-public class Entity{
+public class Entity {
 	protected double x, y;
 	protected Sprite sprite;
 	private boolean removed = false;
@@ -46,6 +46,10 @@ public class Entity{
 	
 	public Sprite getSprite(){
 		return sprite;
+	}
+	
+	public void setSprite(Sprite sprite){
+	    this.sprite = sprite;
 	}
 	
 	public boolean isRemoved() {

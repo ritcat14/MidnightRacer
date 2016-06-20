@@ -40,8 +40,17 @@ public class GUILabel extends GUIComponent {
         fm = g.getFontMetrics();
         g.setFont(font);
         g.setColor(Color.BLACK);
-        g.drawString(text, x + 1, y + 2);
+        String[] parts = text.split("\n");
+        int y0 = 0;
+        for (String s : parts){
+            g.drawString(s, x + 1, y + 2 + y0);
+            y0+=fm.getHeight();
+        }
         g.setColor(colour);
-        g.drawString(text, x, y);
+        y0 = 0;
+        for (String s : parts){
+            g.drawString(s, x + 1, y + 2 + y0);
+            y0+=fm.getHeight();
+        }
     }
 }

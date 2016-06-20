@@ -10,56 +10,59 @@ import java.util.ArrayList;
 
 public abstract class GUIComponent implements EventListener {
 
-    public int                     x, y;
-    public int                     width, height;
-    protected int	  						  time = 0;
-    protected Rectangle					  bounds;
+    public int                        x, y;
+    public int                        width, height;
+    protected int                     time       = 0;
+    protected Rectangle               bounds;
+    protected boolean                 removed    = false;
 
     protected ArrayList<GUIComponent> components = new ArrayList<GUIComponent>();
-  
-    public GUIComponent(int x, int y, int width, int height){
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-      bounds = new Rectangle(x, y, width, height);
+
+    public GUIComponent(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        bounds = new Rectangle(x, y, width, height);
     }
-  
-    public GUIComponent(int x, int y){
-      this.x = x;
-      this.y = y;
-      this.width = 0;
-      this.height = 0;
-      bounds = new Rectangle(x, y, width, height);
+
+    public GUIComponent(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.width = 0;
+        this.height = 0;
+        bounds = new Rectangle(x, y, width, height);
     }
-  
-    public void setPosition(Vector2i position){
-      this.x = (int) position.dX;
-      this.y = (int) position.dY;
+
+    public void setPosition(Vector2i position) {
+        this.x = (int)position.dX;
+        this.y = (int)position.dY;
     }
-  
-    public void setPosition(int x, int y){
-      this.x = x;
-      this.y = y;
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
-  
-    public void setSize(int width, int height){
-      this.width = width;
-      this.height = height;
+
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     public void update() {
         time++;
         for (int i = components.size() - 1; i > -1; i--) {
-            if (components.get(i) == null) continue;
+            if (components.get(i) == null)
+                continue;
             components.get(i).update();
         }
     }
-    
-    public void renderRelative(Graphics2D g){
+
+    public void renderRelative(Graphics2D g) {
         for (int i = components.size() - 1; i > -1; i--) {
             GUIComponent curr = components.get(i);
-            if (curr == null) continue;
+            if (curr == null)
+                continue;
             curr.setPosition(x + curr.x, y + curr.y);
             curr.render(g);
         }
@@ -67,13 +70,15 @@ public abstract class GUIComponent implements EventListener {
 
     public void render(Graphics2D g) {
         for (int i = components.size() - 1; i > -1; i--) {
-            if (components.get(i) == null) continue;
+            if (components.get(i) == null)
+                continue;
             components.get(i).render(g);
         }
     }
 
     public void add(GUIComponent g) {
-        if (g != null) components.add(g);
+        if (g != null)
+            components.add(g);
     }
 
     public void remove(GUIComponent g) {
@@ -84,10 +89,19 @@ public abstract class GUIComponent implements EventListener {
         components.remove(index);
     }
     
-    public Rectangle getBounds(){
+    public void remove() {
+        removed = true;
+    }
+    
+    public boolean isRemoved(){
+        return removed;
+    }
+
+    public Rectangle getBounds() {
         return bounds;
     }
 
-    public void onEvent(Event event) {}
+    public void onEvent(Event event) {
+    }
 
 }

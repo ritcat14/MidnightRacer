@@ -15,7 +15,9 @@ import graphics.layers.levels.Level;
 import graphics.sprite.AnimatedObject;
 import graphics.sprite.Sprite;
 import graphics.sprite.SpriteSheet;
+import graphics.tiles.Hotspot;
 import handlers.ResourceHandler;
+import handlers.StateHandler;
 
 public class Player extends Mob implements EventListener {
 
@@ -25,10 +27,14 @@ public class Player extends Mob implements EventListener {
     private static String  name      = null;
 
     private BufferedImage  image     = null;
+    
+    private double xa = 0, ya = 0;
 
     private AnimatedObject currAnim;
-
-    private Vector2i       vel       = new Vector2i(); // Velocity
+    
+    private Hotspot currHotspot;
+    
+    private int Size;
 
     public boolean         up, down, left, right, walking, playerEnter;
 
@@ -50,9 +56,10 @@ public class Player extends Mob implements EventListener {
         health = 100;
     }
 
-    public Player(String name, double x, double y) {
+    public Player(String name, double x, double y, int size) {
         this.x = x;
         this.y = y;
+        this.Size = size;
         load();
         Player.name = name;
         // Player default attributes
@@ -62,9 +69,9 @@ public class Player extends Mob implements EventListener {
     public void load() {
         //create animated sprites
         SpriteSheet sheet =
-                            new SpriteSheet(ResourceHandler.getSheet("/player/walking/playerWalk.png", Level.BLOCK_SIZE * 6,
-                                                                     Level.BLOCK_SIZE), 0, 0, 6, 1, Level.BLOCK_SIZE);
-        currAnim = new AnimatedObject(sheet, Level.BLOCK_SIZE, Level.BLOCK_SIZE, 6);
+                            new SpriteSheet(ResourceHandler.getSheet("/player/walking/playerWalk.png", 96,
+                                                                     16), 0, 0, 6, 1, 16);
+        currAnim = new AnimatedObject(sheet, Size, Size, 6);
         sprite = currAnim.getSprite();
     }
 
@@ -136,7 +143,9 @@ public class Player extends Mob implements EventListener {
             else
                 currAnim.setFrame(0);
 
-            double xa = 0, ya = 0;
+            xa = 0;
+            ya = 0;
+            
             double speed = 1.5;
             if (walking) {
                 if (up)
@@ -178,15 +187,17 @@ public class Player extends Mob implements EventListener {
                             exit();
                         playerEnter = false;
                     }
+                } else if (e instanceof Hotspot){
+                    String building = ((Hotspot)e).building;
+                    if (building.equals("Garage") && StateHandler.currState != StateHandler.States.GARAGE) StateHandler.changeState(StateHandler.States.GARAGE);
+                    currHotspot = (Hotspot)e;
                 }
             }
         }
     }
 
     private double upTime = 0, downTime = 0, leftTime = 0, rightTime = 0;
-
-    private void moveCar() {
-
+    private void moveCar(){
         car.position = new Vector2i(x, y);
 
         double maxAcceleration = car.gear * (car.speed * 5);
@@ -218,21 +229,38 @@ public class Player extends Mob implements EventListener {
             rightTime -= car.speed;
 
 
-        vel = new Vector2i(rightTime - leftTime, downTime - upTime);
+        car.vel = new Vector2i(rightTime - leftTime, downTime - upTime);
 
-        if (vel.dX != 0 || vel.dY != 0)
-            car.setSprite(Sprite.rotate(car.preSprite, vel.angle()));
+        if (car.vel.dX != 0 || car.vel.dY != 0)
+            car.setSprite(Sprite.rotate(car.preSprite, car.vel.angle()));
 
-        if (vel.dY != 0 || vel.dX != 0) {
-            move(vel.dX, vel.dY);
+        if (car.vel.dY != 0 || car.vel.dX != 0) {
+            move(car.vel.dX, car.vel.dY);
         }
+    }
+    
+    public Hotspot getHotspot(){
+        return currHotspot;
+    }
+    
+    public void clearMovement(Hotspot e){
+        System.out.println("Clearing movement");
+        up = false;
+        down = false;
+        left = false;
+        right = false;
+        xa = 0;
+        ya = 0;
+        if (car != null) car.vel = new Vector2i(0,0);
+        this.x = e.getX() + (e.getSprite().getWidth()/ 2);
+        this.y = e.getY() + (e.getSprite().getHeight() + (Size * 2));
     }
 
     public void render(Screen screen) {
         if (state == State.DRIVING)
             car.render(screen);
         else if (state == State.WALKING)
-            screen.renderMob((int)(x - Level.BLOCK_SIZE), (int)(y - Level.BLOCK_SIZE), this);
+            screen.renderMob((int)(x - Size), (int)(y - Size), this);
     }
 
     public boolean onKeyPressed(KeyPressedEvent event) {

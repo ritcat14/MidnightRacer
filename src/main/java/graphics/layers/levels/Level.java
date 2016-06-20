@@ -2,6 +2,7 @@ package graphics.layers.levels;
 
 import java.util.ArrayList;
 
+import tools.TileCoordinate;
 import entity.Entity;
 import entity.mob.Player;
 import entity.mob.car.Mustang;
@@ -10,12 +11,13 @@ import graphics.Screen;
 import graphics.layers.Layer;
 import graphics.sprite.Sprite;
 import graphics.sprite.SpriteSheet;
+import graphics.tiles.Hotspot;
 import graphics.tiles.Tile;
 import handlers.ResourceHandler;
 
 public abstract class Level extends Layer {
-
-    protected int             layerNum;
+    
+    protected int layerNum;
 
     private ArrayList<Sprite> tileSprites = new ArrayList<Sprite>();
 
@@ -32,16 +34,15 @@ public abstract class Level extends Layer {
     protected int             width       = 0, height = 0;
     private int               xa          = 0, ya = 0;
     public static int         BLOCK_SIZE  = 32;
-    public static int         bitOffset   = (int)(Math.log(BLOCK_SIZE) / Math.log(2)); // 16 -> 4, 32 -> 5, 64 -> 6
+    public static int         ENTITY_SIZE  = 32;
+    public static int         bitOffset   = (int)(Math.log(BLOCK_SIZE) / Math.log(2));
     private int               backID;
 
-    public Level(String dir, int layerNum, int backID) throws Exception {
-        layerTiles = new int[layerNum][];
+    public Level(String dir, int backID) throws Exception {
         this.backID = backID;
-        this.layerNum = layerNum;
         String[][] data = null;
         try {
-            data = ResourceHandler.getElementData(ResourceHandler.getResource(dir), layerNum);
+            data = ResourceHandler.getElementData(ResourceHandler.getResource(dir));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,9 +56,15 @@ public abstract class Level extends Layer {
     }
 
     public void load(String[][] data) {
-        sheet = ResourceHandler.getSheet("/maps/sheets/cityTileSet.png", BLOCK_SIZE * 8, BLOCK_SIZE * 21);
-        int width = Integer.parseInt((data[data.length - 3])[0]);
-        int height = Integer.parseInt((data[data.length - 2])[0]);
+        String[] fileInfo = data[data.length - 1];
+        sheet = ResourceHandler.getSheet("/maps/sheets/" + fileInfo[0], Integer.parseInt(fileInfo[1]), Integer.parseInt(fileInfo[2]));
+        String[] mapInfo = data[data.length - 4];
+        int width = Integer.parseInt(mapInfo[0]);
+        int height = Integer.parseInt(mapInfo[1]);
+        Level.BLOCK_SIZE = Integer.parseInt(mapInfo[2]);
+        layerNum = Integer.parseInt(mapInfo[3]);
+        layerTiles = new int[layerNum][];
+        Level.bitOffset = (int)(Math.log(Level.BLOCK_SIZE) / Math.log(2));
         this.width = width;
         this.height = height;
 
@@ -71,7 +78,6 @@ public abstract class Level extends Layer {
             }
         }
         for (int i = layerNum - 1; i > -1; i--) {
-            System.out.println("Loading layer " + i);
             String[] layerData = data[i];
 
             int j = 0;
@@ -85,9 +91,23 @@ public abstract class Level extends Layer {
             }
             layerTiles[i] = tileData;
         }
-        convertSolids(data[data.length - 1]);
-
-        entities.add(new Mustang(128, 128));
+        convertSolids(data[data.length - 3]);
+        
+        createHotspots(data[data.length - 2]);
+        
+        TileCoordinate t = new TileCoordinate(5,5);
+        entities.add(new Mustang(t.x(), t.y()));
+    }
+    
+    private void createHotspots(String[] data){
+        for (String s : data) {
+            String[] parts = s.split(",");
+            double x = Double.parseDouble(parts[0]);
+            double y = Double.parseDouble(parts[1]);
+            double width = Double.parseDouble(parts[2]);
+            double height = Double.parseDouble(parts[3]);
+            entities.add(new Hotspot(x, y, width, height, parts[parts.length - 1]));
+        }
     }
 
     private void convertSolids(String[] data) {
@@ -112,7 +132,6 @@ public abstract class Level extends Layer {
             boolean solid = Boolean.parseBoolean(bln);
             if (solid) {
                 solids[i] = Integer.parseInt(ID);
-                System.out.println(ID);
                 i++;
             }
         }
@@ -193,7 +212,16 @@ public abstract class Level extends Layer {
     public void update() {
         super.update();
         for (int i = entities.size() - 1; i > -1; i--) {
-            entities.get(i).update();
+            int x0 = xa >> bitOffset;
+            int x1 = (xa + Screen.WIDTH + BLOCK_SIZE) >> bitOffset;
+            int y0 = ya >> bitOffset;
+            int y1 = (ya + Screen.HEIGHT + BLOCK_SIZE) >> bitOffset;
+            
+            int x = (int)entities.get(i).getX() >> bitOffset;
+            int y = (int)entities.get(i).getY() >> bitOffset;
+            
+            if (x < x0 || y < y0 || x >= x1 || y >= y1) {
+            } else entities.get(i).update();
         }
     }
 

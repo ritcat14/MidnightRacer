@@ -21,6 +21,10 @@ public class GUIHandler extends Layer {
   public void render(Graphics2D g){
     for (int i = components.size() - 1; i > -1; i--){
       if (components.get(i) == null) continue;
+      if (components.get(i).isRemoved()) {
+          components.remove(i);
+          continue;
+      }
       components.get(i).render(g);
     }
   }

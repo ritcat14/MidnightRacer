@@ -2,6 +2,8 @@ package entity.mob.car;
 
 import tools.Vector2i;
 import entity.mob.Mob;
+import entity.upgrades.Upgrade;
+import entity.upgrades.engines.Engine;
 import graphics.Screen;
 import graphics.layers.levels.Level;
 import graphics.sprite.Sprite;
@@ -16,6 +18,8 @@ public abstract class Car extends Mob {
     public Vector2i vel = new Vector2i(); // Velocity
     
     public boolean gearUp, gearDown;
+    
+    protected Engine e;
     
     public Vector2i position;
     
@@ -35,7 +39,11 @@ public abstract class Car extends Mob {
     
     @Override
     public void render(Screen screen){
-        screen.renderMob((int)(x - Level.BLOCK_SIZE), (int)(y - Level.BLOCK_SIZE), this);
+        screen.renderMob((int)(x - Level.ENTITY_SIZE), (int)(y - Level.ENTITY_SIZE), this);
+    }
+    
+    public Upgrade getEngine(){
+        return e;
     }
     
     public int getGear(){

@@ -26,7 +26,6 @@ public class Settings extends State {
         GUIButton back = new GUIButton(0, 550, 300, 50, "BACK") {
             @Override
             public boolean onMousePressed(MousePressedEvent e) {
-                System.out.println("Pressed back");
                 if (super.onMousePressed(e))
                     StateHandler.changeState(StateHandler.States.START);
                 return true;
@@ -43,7 +42,6 @@ public class Settings extends State {
             back = new GUIButton((Screen.WIDTH / 2) - (backBtn.getWidth() / 2), Screen.HEIGHT - backBtn.getHeight(), backBtn) {
                 @Override
                 public boolean onMousePressed(MousePressedEvent e) {
-                    System.out.println("Pressed back");
                     if (super.onMousePressed(e))
                         StateHandler.changeState(StateHandler.States.START);
                     return true;

@@ -37,17 +37,36 @@ public class ResourceHandler {
       return s;
     }
   
-    public static String[][] getElementData(InputStream is, int layerNum) throws Exception {
+    public static String[][] getElementData(InputStream is) throws Exception {
       String[] solids = null;
-      String[][] allData = new String[layerNum + 3][];
-      int width = 0, height = 0, tileCount = 0;
+      String[] objects = null;
+      String[] mapInfo = new String[4];
+      String[] imageInfo = new String[3];
+      int width = 0, height = 0, tileCount = 0, objectCount = 0, tileSize = 0, layerNum = 0;
+      
       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
       
       Document doc = docBuilder.parse(is);
       doc.getDocumentElement().normalize();
       
-      NodeList nList = doc.getElementsByTagName("tileset");
+      NodeList nList = doc.getElementsByTagName("layer");
+      layerNum = nList.getLength();
+      
+      String[][] allData = new String[layerNum + 4][];
+      
+      nList = doc.getElementsByTagName("map");
+      
+      for (int temp = 0; temp < nList.getLength(); temp++){
+        Node node = nList.item(temp);
+        
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          Element eElement = (Element) node;
+          tileSize = Integer.parseInt(eElement.getAttribute("tilewidth"));
+        }
+      }
+      
+      nList = doc.getElementsByTagName("tileset");
       
       for (int temp = 0; temp < nList.getLength(); temp++){
         Node node = nList.item(temp);
@@ -80,7 +99,6 @@ public class ResourceHandler {
         }
       }
       
-      
       nList = doc.getElementsByTagName("tile");
       
       for (int temp = 0; temp < nList.getLength(); temp++){
@@ -97,11 +115,45 @@ public class ResourceHandler {
           solids[temp] = ID + "," + valueElement.getAttribute("value");
         }
       }
-      allData[allData.length - 1] = solids;
-      String[] h = { "" + height};
-      String[] w = { "" + width};
-      allData[allData.length - 2] = h;
-      allData[allData.length - 3] = w;
+      
+      nList = doc.getElementsByTagName("object");
+      objectCount = nList.getLength();
+      objects = new String[objectCount];
+      
+      for (int temp = 0; temp < nList.getLength(); temp++){
+        Node node = nList.item(temp);
+        
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          Element eElement = (Element) node;
+          NodeList properties = eElement.getElementsByTagName("property");
+          Element propertiesEl = (Element)properties.item(0);
+          
+          objects[temp] = eElement.getAttribute("x") + "," + eElement.getAttribute("y") + "," + eElement.getAttribute("width") + "," + eElement.getAttribute("height")
+            + "," + propertiesEl.getAttribute("value");
+        }
+      }
+      
+      nList = doc.getElementsByTagName("image");
+      
+      for (int temp = 0; temp < nList.getLength(); temp++){
+        Node node = nList.item(temp);
+        
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+          Element eElement = (Element) node;
+          imageInfo[0] = eElement.getAttribute("source");
+          imageInfo[1] = eElement.getAttribute("width");
+          imageInfo[2] = eElement.getAttribute("height");
+        }
+      }
+      
+      allData[allData.length - 1] = imageInfo;
+      allData[allData.length - 2] = objects;
+      allData[allData.length - 3] = solids;
+      mapInfo[0] = "" + width;
+      mapInfo[1] = "" + height;
+      mapInfo[2] = "" + tileSize;
+      mapInfo[3] = "" + layerNum;
+      allData[allData.length - 4] = mapInfo;
       return allData;
     }
     

@@ -16,6 +16,7 @@ public class Screen {
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 	public int xOffset = 0, yOffset = 0;
 	public int BLOCK_SIZE = Level.BLOCK_SIZE;
+	public int ENTITY_SIZE = Level.ENTITY_SIZE;
 	
 	public static int WIDTH = 800, HEIGHT = 600;
 	public static double SCALE = 1;
@@ -95,30 +96,32 @@ public class Screen {
 	}
   
 	public void renderMob(int xp, int yp, Sprite sprite){
+	    int SIZE = sprite.getWidth();
 		xp -= xOffset;
 		yp -= yOffset;
-		for (int y = 0; y < BLOCK_SIZE; y++) {
+		for (int y = 0; y < SIZE; y++) {
 			int ya = y + yp;
-			for (int x = 0; x < BLOCK_SIZE; x++) {
+			for (int x = 0; x < SIZE; x++) {
 				int xa = x + xp;
-				if (xa < -BLOCK_SIZE || xa >= width || ya < 0 || ya >= height) break;
+				if (xa < -SIZE || xa >= width || ya < 0 || ya >= height) break;
 				if(xa < 0)xa=0;
-				int col = sprite.pixels[x + y * BLOCK_SIZE];
+				int col = sprite.pixels[x + y * SIZE];
 				if(col != 0xffff00ff && col != 0xFF00FF)	pixels[xa + ya * width] = col;
 			}
 		}
 	}
 	
 	public void renderMob(int xp, int yp, Mob mob){
+	    int SIZE = mob.getSprite().getWidth();
 		xp -= xOffset;
 		yp -= yOffset;
-		for (int y = 0; y < BLOCK_SIZE; y++) {
+		for (int y = 0; y < SIZE; y++) {
 			int ya = y + yp;
-			for (int x = 0; x < BLOCK_SIZE; x++) {
+			for (int x = 0; x < SIZE; x++) {
 				int xa = x + xp;
-				if (xa < -BLOCK_SIZE || xa >= width || ya < 0 || ya >= height) break;
+				if (xa < -SIZE || xa >= width || ya < 0 || ya >= height) break;
 				if(xa < 0)xa=0;
-				int col = mob.getSprite().pixels[x + y * BLOCK_SIZE];
+				int col = mob.getSprite().pixels[x + y * SIZE];
 				if(col != 0xffff00ff && col != 0xFF00FF)	pixels[xa + ya * width] = col;
 			}
 		}
