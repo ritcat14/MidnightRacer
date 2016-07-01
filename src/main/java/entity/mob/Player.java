@@ -71,8 +71,8 @@ public class Player extends Mob implements EventListener {
         
         // Read from file
         if (Variables.installed){
-            Variables.money = Integer.parseInt(f.getData(f.playerFile, ":", "Money"));
-            Variables.name = f.getData(f.playerFile, ":", "Name");
+            Variables.money = Integer.parseInt(f.getData(f.playerFile, ":", "MONEY"));
+            Variables.name = f.getData(f.playerFile, ":", "NAME");
         } else {
             Variables.money = 100;
         }

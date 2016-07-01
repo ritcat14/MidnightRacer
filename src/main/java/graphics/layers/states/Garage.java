@@ -99,11 +99,11 @@ public class Garage extends State {
     public boolean onMousePressed(MousePressedEvent e) {
         System.out.println("Mouse Pressed Event fired");
         for (Upgrade b : upgradeButtons){
-            System.out.println("Passing event to button");
+            System.out.println("Passing event to upgrade");
             if (b.onMousePressed(e)){
+                playerMoney.setText("$ " + Variables.money);
                 System.out.println("Setting car sprite");
                 if (player.getCar() != null) player.getCar().setSprite(buttonSprites[upgradeButtons.indexOf(b)]);
-                playerMoney.setText("$ " + Variables.money);
                 return true;
             }
         }

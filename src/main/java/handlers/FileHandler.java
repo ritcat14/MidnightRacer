@@ -92,7 +92,7 @@ public class FileHandler {
         if (tags.length != data.length) return false;
         String[] finalData = new String[tags.length];
         for (int i = 0; i < tags.length; i++){
-            finalData[i] = tags[i].trim() + divider + data[i];
+            finalData[i] = tags[i].trim().toUpperCase() + divider + data[i];
         }
         PrintWriter writer;
         try {
@@ -174,7 +174,7 @@ public class FileHandler {
         String[] newData = new String[tags.length];
         int items = tags.length;
         for (int i = 0; i < tags.length; i ++){
-            newData[i] = tags[i] + divider + data[i];
+            newData[i] = tags[i].trim().toUpperCase() + divider + data[i];
         }
         for (int i = lineNum; i < items + lineNum; i++) {
             fileData[i] = newData[i - lineNum];
@@ -198,7 +198,7 @@ public class FileHandler {
     
     public boolean add(String dir, String data, String tag, String divider, int line) {
         String[] dt = {data};
-        String[] tg = {tag};
+        String[] tg = {tag.trim().toUpperCase()};
         return add(dir, dt, tg, divider, line);
     }
     
@@ -254,7 +254,7 @@ public class FileHandler {
     public String getData(String dir, String divider, String tag) {
         String[] fileData = getData(dir);
         for (int i = 0; i < fileData.length; i++){
-            if (fileData[i].split(divider)[0].equals(tag)) return fileData[i].split(divider)[1];
+            if (fileData[i].split(divider)[0].equals(tag.trim().toUpperCase())) return fileData[i].split(divider)[1];
         }
         return "";
     }
@@ -284,7 +284,7 @@ public class FileHandler {
         String[] fileData = getData(dir);
         for (int i = 0; i < fileData.length; i++){
             for (int j = 0; j < tags.length; j++){
-                if (fileData[i].split(divider)[0].equals(tags[j])) data[j] = fileData[i].split(divider)[1];
+                if (fileData[i].split(divider)[0].equals(tags[j].trim().toUpperCase())) data[j] = fileData[i].split(divider)[1];
             }
         }
         return data;

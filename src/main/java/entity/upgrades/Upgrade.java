@@ -8,6 +8,7 @@ import tools.Variables;
 import events.types.MousePressedEvent;
 import graphics.GUI.GUIButton;
 import graphics.GUI.GUILabel;
+import graphics.GUI.GUIMessage;
 import graphics.sprite.Sprite;
 import handlers.DataHandler;
 
@@ -22,11 +23,9 @@ public class Upgrade extends GUIButton {
     protected GUILabel upgradeCost;
     
     public Upgrade(Sprite sprite, int x, int y, int costPerUpgrade){
-        super(x, y, DataHandler.spriteToImage(sprite));
+        super(x, y, 50, 50, DataHandler.spriteToImage(sprite));
         this.costPerUpgrade = costPerUpgrade;
         this.sprite = sprite;
-        this.width = 50;
-        this.height = 50;
         
         upgradeLev = new GUILabel(x, y + height, "lvl. " + upgradeLevel).setFont(new Font("Arial", Font.BOLD, 15)).setColour(Color.DARK_GRAY);
         add(upgradeLev);
@@ -39,16 +38,17 @@ public class Upgrade extends GUIButton {
     public boolean onMousePressed(MousePressedEvent e) {
         System.out.println("Upgrade recieved event");
         if (super.onMousePressed(e)){
-            System.out.println("Event belongs to button");
-            if (Variables.money > costPerUpgrade * upgradeLevel){
+            System.out.println("Event belongs to upgrade");
+            if (Variables.money > costPerUpgrade * upgradeLevel) {
                 Variables.money -= costPerUpgrade * upgradeLevel;
                 upgradeLevel ++;
                 upgradeLev.setText("lvl. " + upgradeLevel);
                 upgradeCost.setText("$" + costPerUpgrade * upgradeLevel);
+            } else {
+                add(new GUIMessage(100, 20, "Not enough money!", 7));
             }
             return true;
         }
-        System.out.println("Event not in bounds");
         return false;
     }
     

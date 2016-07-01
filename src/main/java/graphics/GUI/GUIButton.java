@@ -40,6 +40,20 @@ public class GUIButton extends GUIComponent {
         setImage(image);
         c = new Color(0xAAAAAA);
     }
+
+    public GUIButton(int x, int y, int width, int height, BufferedImage image, String text) {
+        super(x, y, width, height);
+        this.image = image;
+        setImage(image);
+        c = new Color(0xAAAAAA);
+    }
+
+    public GUIButton(int x, int y, int width, int height, BufferedImage image) {
+        super(x, y, width, height);
+        this.image = image;
+        setImage(image);
+        c = new Color(0xAAAAAA);
+    }
   
     public void setColour(int col){
       c = new Color(col);
@@ -74,18 +88,18 @@ public class GUIButton extends GUIComponent {
     }
   
     public boolean onMousePressed(MousePressedEvent e) {
-        if (this.bounds.contains(new Point(e.getX(), e.getY()))) return true;
+        if (this.getBounds().contains(new Point(e.getX(), e.getY()))) return true;
         else
             return false;
     }
 
     public boolean onMouseReleased(MouseReleasedEvent e) {
-        if (this.bounds.contains(new Point(e.getX(), e.getY()))) return true;
+        if (this.getBounds().contains(new Point(e.getX(), e.getY()))) return true;
         else return false;
     }
 
     public boolean onMouseMoved(MouseMovedEvent e) {
-        if (this.bounds.contains(new Point(e.getX(), e.getY()))) return true;
+        if (this.getBounds().contains(new Point(e.getX(), e.getY()))) return true;
         else return false;
     }
 

@@ -98,6 +98,7 @@ public abstract class GUIComponent implements EventListener {
     }
 
     public Rectangle getBounds() {
+        bounds = new Rectangle(x, y, width, height);
         return bounds;
     }
 
