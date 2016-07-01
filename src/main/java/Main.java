@@ -25,6 +25,7 @@ public class Main extends Canvas implements Runnable {
     private Mouse m;
     private Keyboard key;
     private StateHandler sh = new StateHandler();
+    public static JFrame frame;
   
     public Main(){
       setPreferredSize(new Dimension((int)(WIDTH * SCALE), (int)(HEIGHT * SCALE)));
@@ -98,8 +99,9 @@ public class Main extends Canvas implements Runnable {
     public static void main(String[] args) {
         new Console();
         Main m = new Main();
-        JFrame frame = new JFrame("Midnight-Rider");
+        frame = new JFrame("Midnight-Rider");
         frame.setResizable(false);
+        frame.setUndecorated(true);
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
@@ -112,7 +114,7 @@ public class Main extends Canvas implements Runnable {
         frame.setVisible(true);
         frame.requestFocus();
         m.start();
-        frame.requestFocus(); 
+        frame.requestFocus();
     }
   
 }

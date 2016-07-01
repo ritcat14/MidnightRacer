@@ -1,6 +1,5 @@
 handlers/StateHandler$1.class
 graphics/layers/states/Garage$3.class
-graphics/layers/states/Install$2.class
 graphics/layers/levels/Level.class
 tools/Vector2i.class
 graphics/GUI/GUIButton$3.class
@@ -11,8 +10,8 @@ tools/Variables.class
 tools/TileCoordinate.class
 graphics/layers/states/Start$1.class
 graphics/layers/states/Start$4.class
-handlers/ResourceHandler.class
 graphics/GUI/GUIButton.class
+handlers/ResourceHandler.class
 entity/mob/Player$1.class
 handlers/DataHandler.class
 handlers/StateHandler.class
@@ -25,14 +24,15 @@ events/types/MouseMovedEvent.class
 events/types/MouseReleasedEvent.class
 graphics/GUI/GUIPanel$Type.class
 entity/upgrades/Upgrade.class
+graphics/GUI/GUICheckBox.class
 graphics/layers/states/State.class
 events/Event.class
-Main.class
 graphics/GUI/GUIPanel$1.class
+Main.class
 graphics/layers/states/Start$6.class
 entity/mob/Player.class
-events/Event$Type.class
 graphics/sprite/SpriteSheet.class
+events/Event$Type.class
 graphics/layers/states/Garage$2.class
 graphics/layers/states/Game.class
 entity/upgrades/engines/V8.class
@@ -61,9 +61,9 @@ events/EventHandler.class
 graphics/layers/states/Garage$1.class
 handlers/StateHandler$States.class
 events/types/KeyPressedEvent.class
-graphics/sprite/Sprite.class
 graphics/layers/states/Install.class
 graphics/GUI/GUIButton$1.class
+graphics/sprite/Sprite.class
 events/EventListener.class
 graphics/GUI/GUIMessage.class
 graphics/layers/states/Start$3.class
@@ -80,4 +80,4 @@ tools/Maths.class
 graphics/tiles/Tile.class
 graphics/layers/states/Settings$2.class
 entity/Entity.class
-graphics/layers/states/Install$3.class
+graphics/GUI/GUICheckBox$1.class

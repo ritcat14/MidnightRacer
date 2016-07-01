@@ -20,7 +20,7 @@ public class StateHandler implements EventListener {
         GARAGE;
     };
 
-    private static State state;
+    public static State state;
     public static State preState;
     public static States preEnumState;
     public static States currState;

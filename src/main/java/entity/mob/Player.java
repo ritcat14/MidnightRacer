@@ -1,9 +1,11 @@
 package entity.mob;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import tools.Variables;
 import tools.Vector2i;
 import entity.Entity;
 import entity.mob.car.Car;
@@ -11,11 +13,13 @@ import events.*;
 import events.types.KeyPressedEvent;
 import events.types.KeyReleasedEvent;
 import graphics.*;
+import graphics.GUI.GUIMessage;
 import graphics.layers.levels.Level;
 import graphics.sprite.AnimatedObject;
 import graphics.sprite.Sprite;
 import graphics.sprite.SpriteSheet;
 import graphics.tiles.Hotspot;
+import handlers.FileHandler;
 import handlers.ResourceHandler;
 import handlers.StateHandler;
 
@@ -23,8 +27,6 @@ public class Player extends Mob implements EventListener {
 
     public static Level    levelToGo = null;
     public static int      XPLevel   = 1;
-
-    private static String  name      = null;
 
     private BufferedImage  image     = null;
     
@@ -45,23 +47,16 @@ public class Player extends Mob implements EventListener {
     }
 
     private State state = State.WALKING;
+    
+    private FileHandler f = new FileHandler();
 
     private Car   car   = null;
 
-    @Deprecated
-    public Player(String name, Keyboard input) {
-        Player.name = name;
-        load();
-        // Player default attributes
-        health = 100;
-    }
-
-    public Player(String name, double x, double y, int size) {
+    public Player(double x, double y, int size) {
         this.x = x;
         this.y = y;
         this.Size = size;
         load();
-        Player.name = name;
         // Player default attributes
         health = 100;
     }
@@ -73,14 +68,14 @@ public class Player extends Mob implements EventListener {
                                                                      16), 0, 0, 6, 1, 16);
         currAnim = new AnimatedObject(sheet, Size, Size, 6);
         sprite = currAnim.getSprite();
-    }
-
-    public BufferedImage getFace() {
-        return image;
-    }
-
-    public static String getName() {
-        return name;
+        
+        // Read from file
+        if (Variables.installed){
+            Variables.money = Integer.parseInt(f.getData(f.playerFile, ":", "Money"));
+            Variables.name = f.getData(f.playerFile, ":", "Name");
+        } else {
+            Variables.money = 100;
+        }
     }
 
     public void levelIn() {
@@ -133,6 +128,13 @@ public class Player extends Mob implements EventListener {
     }
 
     public void update() {
+        int time = Variables.runningTime;
+        if (time % 7200 == 0) {
+            Variables.money --;
+            GUIMessage msg = new GUIMessage(80, 15, Color.BLACK, ((Variables.runningTime / 60) / 60) + ") Saving...", Color.CYAN, 3);
+            StateHandler.state.getRenderer().add(msg);
+            save();
+        }
         checkCollision();
         if (state == State.DRIVING) {
             car.update();
@@ -189,7 +191,11 @@ public class Player extends Mob implements EventListener {
                     }
                 } else if (e instanceof Hotspot){
                     String building = ((Hotspot)e).building;
-                    if (building.equals("Garage") && StateHandler.currState != StateHandler.States.GARAGE) StateHandler.changeState(StateHandler.States.GARAGE);
+                    if (building.equals("Garage") && StateHandler.currState != StateHandler.States.GARAGE) {
+                        clearMovement((Hotspot)e);
+                        StateHandler.changeState(StateHandler.States.GARAGE);
+                    }
+
                     currHotspot = (Hotspot)e;
                 }
             }
@@ -252,8 +258,8 @@ public class Player extends Mob implements EventListener {
         xa = 0;
         ya = 0;
         if (car != null) car.vel = new Vector2i(0,0);
-        this.x = e.getX() + (e.getSprite().getWidth()/ 2);
-        this.y = e.getY() + (e.getSprite().getHeight() + (Size * 2));
+        this.x = e.getX() + ((e.getSprite().getWidth() / 3) * 2);
+        this.y = e.getY() + (e.getSprite().getHeight() + (Size * 4));
     }
 
     public void render(Screen screen) {
@@ -316,4 +322,9 @@ public class Player extends Mob implements EventListener {
         }
         return false;
     }
+    
+    public void save(){
+        f.save(f.playerFile, Variables.getPlayerData());
+    }
+    
 }

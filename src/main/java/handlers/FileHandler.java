@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 
+import tools.Variables;
+
 public class FileHandler {
     
     private String VersionID = "1.8.3";
@@ -27,7 +29,7 @@ public class FileHandler {
             createTree(playerDir);
             createTree(systemDir);
             save(systemFile, VersionID);
-            save(playerFile);
+            save(playerFile, Variables.getPlayerData());
             return true;
         } catch (Exception e){
             e.printStackTrace();

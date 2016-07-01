@@ -14,7 +14,7 @@ public class GUIButton extends GUIComponent {
 
     private GUILabel label;
 
-    private BufferedImage    image          = null;
+    protected BufferedImage    image          = null;
     private Color c;
 
     public GUIButton(int x, int y, int width, int height, String text) {

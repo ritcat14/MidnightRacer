@@ -3,8 +3,8 @@
 /projects/MidnightRacer/src/main/java/events/types/MouseReleasedEvent.java
 /projects/MidnightRacer/src/main/java/events/types/KeyPressedEvent.java
 /projects/MidnightRacer/src/main/java/graphics/sprite/Sprite.java
-/projects/MidnightRacer/src/main/java/graphics/sprite/SpriteSheet.java
 /projects/MidnightRacer/src/main/java/graphics/layers/levels/City1.java
+/projects/MidnightRacer/src/main/java/graphics/sprite/SpriteSheet.java
 /projects/MidnightRacer/src/main/java/handlers/StateHandler.java
 /projects/MidnightRacer/src/main/java/tools/Variables.java
 /projects/MidnightRacer/src/main/java/tools/Vector2i.java
@@ -15,13 +15,13 @@
 /projects/MidnightRacer/src/main/java/events/Event.java
 /projects/MidnightRacer/src/main/java/events/EventHandler.java
 /projects/MidnightRacer/src/main/java/events/Keyboard.java
-/projects/MidnightRacer/src/main/java/events/types/MouseButtonEvent.java
 /projects/MidnightRacer/src/main/java/entity/upgrades/Upgrade.java
+/projects/MidnightRacer/src/main/java/events/types/MouseButtonEvent.java
 /projects/MidnightRacer/src/main/java/entity/mob/car/Car.java
 /projects/MidnightRacer/src/main/java/graphics/layers/Layer.java
 /projects/MidnightRacer/src/main/java/tools/Console.java
-/projects/MidnightRacer/src/main/java/tools/Maths.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUIMessage.java
+/projects/MidnightRacer/src/main/java/tools/Maths.java
 /projects/MidnightRacer/src/main/java/entity/upgrades/engines/V8.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUIPanel.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUIComponent.java
@@ -29,8 +29,9 @@
 /projects/MidnightRacer/src/main/java/entity/upgrades/engines/Engine.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Settings.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Garage.java
-/projects/MidnightRacer/src/main/java/events/Mouse.java
 /projects/MidnightRacer/src/main/java/events/types/KeyReleasedEvent.java
+/projects/MidnightRacer/src/main/java/events/Mouse.java
+/projects/MidnightRacer/src/main/java/graphics/GUI/GUICheckBox.java
 /projects/MidnightRacer/src/main/java/graphics/tiles/Tile.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Install.java
 /projects/MidnightRacer/src/main/java/entity/mob/Mob.java
@@ -41,8 +42,8 @@
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUISlideShow.java
 /projects/MidnightRacer/src/main/java/graphics/layers/states/Start.java
 /projects/MidnightRacer/src/main/java/entity/mob/Player.java
-/projects/MidnightRacer/src/main/java/handlers/GUIHandler.java
 /projects/MidnightRacer/src/main/java/graphics/GUI/GUIButton.java
+/projects/MidnightRacer/src/main/java/handlers/GUIHandler.java
 /projects/MidnightRacer/src/main/java/handlers/FileHandler.java
 /projects/MidnightRacer/src/main/java/events/types/MousePressedEvent.java
 /projects/MidnightRacer/src/main/java/tools/TileCoordinate.java

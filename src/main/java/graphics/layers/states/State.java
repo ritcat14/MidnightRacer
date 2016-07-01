@@ -18,6 +18,11 @@ public class State implements EventListener {
       gh = new GUIHandler();
       add(gh);
     }
+    
+    public GUIHandler getRenderer(){
+        if (gh != null) return gh;
+        else return gh = new GUIHandler();
+    }
 
     public void render(Graphics2D g) {
         for (int i = layerStack.size() - 1; i > -1; i--) {

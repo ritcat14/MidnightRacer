@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import tools.TileCoordinate;
+import tools.Variables;
 
 public class Game extends State {
 
@@ -29,7 +30,7 @@ public class Game extends State {
     public Game() {
         super();
         TileCoordinate playerSpawn = new TileCoordinate(5, 5);
-        player = new Player("Kris", playerSpawn.x(), playerSpawn.y(), 16);
+        player = new Player(playerSpawn.x(), playerSpawn.y(), 16);
         City1 l1;
         try {
             l1 = new City1();
@@ -40,13 +41,11 @@ public class Game extends State {
             e1.printStackTrace();
         }
         gear = new GUILabel(4, (Screen.HEIGHT - 50), "GEAR: ").setColour(Color.GRAY);
-        
-        GUIMessage msg = new GUIMessage(100, 200, Color.BLACK, "Test message", Color.CYAN, 10);
-        gh.add(msg);
     }
     
     public void update() {
             super.update();
+            Variables.runningTime++;
             if (player.getCar() != null) {
                 gear.setText("GEAR: " + player.getCar().getGear());
                 if (!gh.contains(gear)){
