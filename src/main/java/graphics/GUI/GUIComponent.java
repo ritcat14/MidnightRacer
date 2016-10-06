@@ -101,7 +101,11 @@ public abstract class GUIComponent implements EventListener {
         bounds = new Rectangle(x, y, width, height);
         return bounds;
     }
-
+    
+    public ArrayList<GUIComponent> getComponents() {
+        return components;
+    }
+    
     public void onEvent(Event event) {
     }
 

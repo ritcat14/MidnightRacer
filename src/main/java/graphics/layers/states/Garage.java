@@ -11,6 +11,7 @@ import events.*;
 import events.types.MousePressedEvent;
 import graphics.Screen;
 import graphics.GUI.GUIButton;
+import graphics.GUI.GUIComponent;
 import graphics.GUI.GUILabel;
 import graphics.GUI.GUIPanel;
 import graphics.layers.levels.Level;
@@ -22,8 +23,6 @@ import handlers.StateHandler;
 public class Garage extends State {
 
     BufferedImage       backBtn, panel;
-    
-    ArrayList<Upgrade> upgradeButtons = new ArrayList<Upgrade>();
 
     GUIPanel            main;
     
@@ -87,7 +86,6 @@ public class Garage extends State {
     
     @Override
     public void onEvent(Event e){
-        super.onEvent(e);
         EventDispatcher dispatcher = new EventDispatcher(e);
         dispatcher.dispatch(Event.Type.MOUSE_PRESSED, new EventHandler() {
             public boolean onEvent(Event event) {
@@ -97,14 +95,16 @@ public class Garage extends State {
     }
   
     public boolean onMousePressed(MousePressedEvent e) {
-        System.out.println("Mouse Pressed Event fired");
-        for (Upgrade b : upgradeButtons){
-            System.out.println("Passing event to upgrade");
-            if (b.onMousePressed(e)){
-                playerMoney.setText("$ " + Variables.money);
-                System.out.println("Setting car sprite");
-                if (player.getCar() != null) player.getCar().setSprite(buttonSprites[upgradeButtons.indexOf(b)]);
-                return true;
+        ArrayList<GUIComponent> components = main.getComponents();
+        for (GUIComponent b : components){
+            if (b instanceof GUIButton){
+                GUIButton b1 = ((GUIButton)b);
+                if (b1.onMousePressed(e)){
+                    playerMoney.setText("$ " + Variables.money);
+                    if (player.getCar() != null) player.getCar().setSprite(buttonSprites[components.indexOf(b)]);
+                    System.out.println("Car sprite changed");
+                    return true;
+                }
             }
         }
         return false;
@@ -128,7 +128,6 @@ public class Garage extends State {
                 y += Level.BLOCK_SIZE + 100;
             }
             Upgrade b = new Upgrade(s, x, y, 10);
-            upgradeButtons.add(b);
             main.add(b);
             x += Level.BLOCK_SIZE + 100;
             i++;

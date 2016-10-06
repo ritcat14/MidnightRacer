@@ -5,12 +5,14 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import tools.Variables;
+import entity.mob.Player;
 import events.types.MousePressedEvent;
 import graphics.GUI.GUIButton;
 import graphics.GUI.GUILabel;
 import graphics.GUI.GUIMessage;
 import graphics.sprite.Sprite;
 import handlers.DataHandler;
+import handlers.StateHandler;
 
 public class Upgrade extends GUIButton {
     
@@ -34,16 +36,20 @@ public class Upgrade extends GUIButton {
         add(upgradeCost);
     }
     
+    private static boolean firstTime = true;
     @Override
     public boolean onMousePressed(MousePressedEvent e) {
-        System.out.println("Upgrade recieved event");
+        if(firstTime) {
+            firstTime = false;
+            StateHandler.state.onEvent(e);
+        }
         if (super.onMousePressed(e)){
-            System.out.println("Event belongs to upgrade");
             if (Variables.money > costPerUpgrade * upgradeLevel) {
                 Variables.money -= costPerUpgrade * upgradeLevel;
                 upgradeLevel ++;
                 upgradeLev.setText("lvl. " + upgradeLevel);
                 upgradeCost.setText("$" + costPerUpgrade * upgradeLevel);
+                
             } else {
                 add(new GUIMessage(100, 20, "Not enough money!", 7));
             }

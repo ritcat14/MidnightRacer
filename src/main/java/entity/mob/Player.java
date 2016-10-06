@@ -195,7 +195,6 @@ public class Player extends Mob implements EventListener {
                         clearMovement((Hotspot)e);
                         StateHandler.changeState(StateHandler.States.GARAGE);
                     }
-
                     currHotspot = (Hotspot)e;
                 }
             }
